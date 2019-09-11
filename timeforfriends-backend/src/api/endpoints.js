@@ -2,29 +2,27 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 
-// const Person = require("../models/Person");
-
 router.get("/api", (req, res) => {
-    res.json("hehe")
+    res.json("Test")
 });
 
-router.get("/api/:collection", (req, res) => {
+router.get("/api/search/:collection/", (req, res) => {
+    console.log(Object.keys(req.query)[0]);
+    // let name = JSON.parse(decodeURIComponent(req.query.name));
+    let firstName = req.query.firstName
+    let lastName = req.query.lastName
+    let populate;
+    if (req.query.populate) {
+        // populate = JSON.parse(decodeURIComponent(req.query.populate));
+        populate = req.query.populate
+        if (populate[0] === null) {
+            populate[0] = "";
+        }
+    }
     mongoose
         .model(req.params.collection)
-        .find()
-        .lean()
-        // .populate("pets", "name age")
-        .then(item => {
-            res.json(item);
-            // console.log(item);
-        });
-});
-
-router.get("/api/:collection/:id", (req, res) => {
-    mongoose
-        .model(req.params.collection)
-        .findOne({ _id: req.params.id })
-        // .populate("pets", "name age")
+        .findOne({'name.firstName': firstName})
+        .populate(populate)
         .then(item => {
             res.json(item);
             // console.log(item);
@@ -36,20 +34,21 @@ router.get("/api/:collection/:id", (req, res) => {
         });
 });
 
-router.get("/search/:collection/", (req, res) => {
-    console.log(req.query);
-    let name = JSON.parse(decodeURIComponent(req.query.name));
-    let populate;
-    if (req.query.populate) {
-        populate = JSON.parse(decodeURIComponent(req.query.populate));
-        if (populate[0] === null) {
-            populate[0] = "";
-        }
-    }
+router.get("/api/:collection", (req, res) => {
     mongoose
         .model(req.params.collection)
-        .findOne(name)
-        .populate(populate)
+        .find()
+        .then(item => {
+            res.json(item);
+            // console.log(item);
+        });
+});
+
+router.get("/api/:collection/:id", (req, res) => {
+    mongoose
+        .model(req.params.collection)
+        .findOne({ _id: req.params.id })
+        // .populate("pets", "name age")
         .then(item => {
             res.json(item);
             // console.log(item);
