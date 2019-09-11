@@ -15,13 +15,14 @@ const getOne = (id, collection) => {
 }
 
 const populatedSearch = (item, collection) => {
-    const name = encodeURIComponent(JSON.stringify({name: item.name}))
-    let populate = encodeURIComponent(JSON.stringify([item.populate]))
-    let url = `http://localhost:3000/search/${collection}?name=${name}`
+    // const name = encodeURIComponent(JSON.stringify({name: item.name}))
+    // let populate = encodeURIComponent(JSON.stringify([item.populate]))
+    const name = item.firstName
+    let url = `http://localhost:3001/api/search/${collection}?firstName=${name}`
     console.log(item.populate);
-    if (item.populate !== null) {
-        url = url.concat(`&populate=${populate}`)
-    }
+    // if (item.populate !== null) {
+    //     url = url.concat(`&populate=${populate}`)
+    // }
     console.log(url);
 
     const request = axios.get(url)
@@ -29,7 +30,7 @@ const populatedSearch = (item, collection) => {
 }
 
 const querySearch = (name, populate, collection) => {
-    let url = `http://localhost:3000/search/${collection}?name=${name}&populate=${populate}`
+    let url = `http://localhost:3001/api/search/${collection}?firstName=${name}`
     console.log(url);
 
     const request = axios.get(url)

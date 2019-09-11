@@ -1,13 +1,15 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import App from "./App";
-import mongoService from "./mongoService";
+import mongoService from "../api/mongoAPI";
 
 function reactRouter() {
     return (
         <Router>
             <div>
-                <hr />
+                <ul>
+                    <li>test</li>
+                </ul>
                 <Route exact path="/" component={App} />
                 <Route exact path="/:collection" component={App} />
                 <Route path="/about" component={About} />
@@ -37,7 +39,7 @@ function Search({ match }) {
 
 const searchParams = props => {
     const query = new URLSearchParams(props.location.search);
-    const name = query.get("name");
+    const name = query.get("firstName");
     const populate = query.get("populate");
     const collection = props.match.params.collection;
     console.log(collection);
