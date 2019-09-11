@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 
+// const Person = require("../models/Person");
+
 router.get("/api", (req, res) => {
     res.json("hehe")
 });
