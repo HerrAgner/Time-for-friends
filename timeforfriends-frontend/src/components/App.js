@@ -13,11 +13,12 @@ const App = props => {
     });
   }, [props]);
 
+
   return (
     <div className="App">
       <Filter setFilter={setFilter} />
       <ul>
-        <div>{PersonRender(items, filter)}</div>
+        <div>{PersonRender(items, setItems, filter)}</div>
       </ul>
         {/*{PostForm(newItem, setNewItem)}*/}
     </div>
