@@ -31,8 +31,8 @@ const populatedSearch = (item, collection) => {
     return request.then(response => response.data)
 }
 
-const querySearch = (name, populate, collection) => {
-    let url = `/search/${collection}?firstName=${name}`
+const querySearch = (name, collection) => {
+    let url = `/api/search/${collection}?firstName=${name}`
     console.log(url);
 
     const request = axios.get(url)
@@ -40,6 +40,7 @@ const querySearch = (name, populate, collection) => {
 }
 
 const create = (newObject, collection) => {
+    console.log("create");
     let url = baseUrl + collection
     const request = axios.post(url, newObject)
     return request.then(response => response.data)

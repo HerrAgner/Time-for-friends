@@ -2,26 +2,24 @@ import React, { useState, useEffect } from "react";
 import "../style/App.css";
 import mongoService from "../api/mongoAPI";
 import PersonRender from "../components/Person";
-import PostForm from "../components/PersonForm"
 
 const App = props => {
   const [items, setItems] = useState([]);
   const [filter, setFilter] = useState("");
-  const [newItem, setNewItem] = useState({})
 
   useEffect(() => {
-    mongoService.getAll("person").then(res => {
+    mongoService.getAll(props.match.params.collection || "person").then(res => {
       setItems(res);
     });
-  }, []);
+  }, [props]);
 
   return (
     <div className="App">
-      {/*<Filter setFilter={setFilter} />*/}
-      {/*<ul>*/}
-      {/*  /!*<div>{PersonRender(items, filter)}</div>*!/*/}
-      {/*</ul>*/}
-        {PostForm(newItem, setNewItem)}
+      <Filter setFilter={setFilter} />
+      <ul>
+        <div>{PersonRender(items, filter)}</div>
+      </ul>
+        {/*{PostForm(newItem, setNewItem)}*/}
     </div>
   );
 };

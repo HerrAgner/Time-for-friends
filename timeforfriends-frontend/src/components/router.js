@@ -1,17 +1,25 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import App from "./App";
+import PersonForm from "../components/PersonForm"
 import mongoService from "../api/mongoAPI";
 
 function reactRouter() {
+
     return (
         <Router>
             <div>
                 <ul>
-                    <li>test</li>
+                    <li>
+                        <Link to="/">Home</Link>
+                    </li>
+                    <li>
+                        <Link to="/post">Post</Link>
+                    </li>
                 </ul>
                 <Route exact path="/" component={App} />
                 {/*<Route exact path="/:collection" component={App} />*/}
+                <Route exact path="/post" component={PersonForm} />
                 <Route path="/about" component={About} />
                 <Route path="/search" component={Search} />
             </div>
@@ -40,11 +48,10 @@ function Search({ match }) {
 const searchParams = props => {
     const query = new URLSearchParams(props.location.search);
     const name = query.get("firstName");
-    const populate = query.get("populate");
     const collection = props.match.params.collection;
     console.log(collection);
 
-    mongoService.querySearch(name, populate, collection).then(res => {
+    mongoService.querySearch(name, collection).then(res => {
         console.log(res);
     });
 
