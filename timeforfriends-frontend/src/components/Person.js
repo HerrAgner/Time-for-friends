@@ -1,17 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import mongoAPI from "../api/mongoAPI";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
-import moment from "moment-timezone";
+import Clock from "./Clock";
 
 const PersonItem = props => {
-    const time = moment().tz(props.timeZone).format('hh:mm')
-
   return (
     <div>
-      <p>
-        {props.firstName} {props.lastName} {props.country} {props.city} {time}
-      </p>
+        {props.firstName} {props.lastName} {props.country} {props.city}
+        <Clock timeZone={props.timeZone}/>
         <IconButton aria-label="delete" onClick={props.deleteItem}>
         <DeleteIcon />
       </IconButton>
