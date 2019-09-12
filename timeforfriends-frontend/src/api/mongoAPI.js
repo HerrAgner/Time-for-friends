@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/'
+const baseUrl = '/api/'
 
 const getAll = (collection) => {
     let url = baseUrl + collection
@@ -14,11 +14,13 @@ const getOne = (id, collection) => {
     return request.then(response => response.data)
 }
 
+
+
 const populatedSearch = (item, collection) => {
     // const name = encodeURIComponent(JSON.stringify({name: item.name}))
     // let populate = encodeURIComponent(JSON.stringify([item.populate]))
     const name = item.firstName
-    let url = `http://localhost:3001/api/search/${collection}?firstName=${name}`
+    let url = `/search/${collection}?firstName=${name}`
     console.log(item.populate);
     // if (item.populate !== null) {
     //     url = url.concat(`&populate=${populate}`)
@@ -30,7 +32,7 @@ const populatedSearch = (item, collection) => {
 }
 
 const querySearch = (name, populate, collection) => {
-    let url = `http://localhost:3001/api/search/${collection}?firstName=${name}`
+    let url = `/search/${collection}?firstName=${name}`
     console.log(url);
 
     const request = axios.get(url)

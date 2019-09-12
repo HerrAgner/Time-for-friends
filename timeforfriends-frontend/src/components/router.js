@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import App from "./App";
 import mongoService from "../api/mongoAPI";
 
@@ -11,7 +11,7 @@ function reactRouter() {
                     <li>test</li>
                 </ul>
                 <Route exact path="/" component={App} />
-                <Route exact path="/:collection" component={App} />
+                {/*<Route exact path="/:collection" component={App} />*/}
                 <Route path="/about" component={About} />
                 <Route path="/search" component={Search} />
             </div>

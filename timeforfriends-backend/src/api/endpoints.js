@@ -35,13 +35,17 @@ router.get("/api/search/:collection/", (req, res) => {
 });
 
 router.get("/api/:collection", (req, res) => {
-    mongoose
-        .model(req.params.collection)
-        .find()
-        .then(item => {
-            res.json(item);
-            // console.log(item);
-        });
+    try {
+        mongoose
+            .model(req.params.collection)
+            .find()
+            .then(item => {
+                res.json(item);
+                // console.log(item);
+            })
+    } catch(e) {
+        res.status(404).json("error yoyo");
+    }
 });
 
 router.get("/api/:collection/:id", (req, res) => {
