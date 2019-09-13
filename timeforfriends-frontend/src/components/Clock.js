@@ -2,19 +2,21 @@ import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 
 const Clock = timeZone => {
-  const [time, setTime] = useState(moment()
+  const [time, setTime] = useState(
+    moment()
       .tz(timeZone.timeZone)
-      .format("hh:mm:ss"));
+      .format("HH:mm:ss")
+  );
 
   useEffect(() => {
-    setTimeout(() => {
+   const timeout = setTimeout(() => {
       setTime(
         moment()
           .tz(timeZone.timeZone)
-          .format("hh:mm:ss")
+          .format("HH:mm:ss")
       );
     }, 1000);
-    // return () => clearTimeout(timer);
+    return() => clearTimeout(timeout)
   });
 
   return <div>{time}</div>;

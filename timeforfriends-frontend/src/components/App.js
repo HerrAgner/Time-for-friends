@@ -8,7 +8,6 @@ const App = props => {
   const [items, setItems] = useState([]);
   const [filter, setFilter] = useState("");
   const [timeFilter, setTimeFilter] = useState({min:0, max:24})
-
   useEffect(() => {
     mongoService.getAll(props.match.params.collection || "person").then(res => {
       setItems(res);
@@ -20,7 +19,7 @@ const App = props => {
       <Filter setFilter={setFilter} />
       <CustomizedSlider timeFilter={timeFilter} setTimeFilter={setTimeFilter}/>
       <ul>
-        <div>{PersonRender(items, setItems, filter)}</div>
+        <div>{PersonRender(items, setItems, filter, timeFilter)}</div>
       </ul>
     </div>
   );
