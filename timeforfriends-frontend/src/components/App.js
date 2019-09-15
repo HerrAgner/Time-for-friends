@@ -3,7 +3,10 @@ import "../style/App.css";
 import mongoService from "../api/mongoAPI";
 import PersonRender from "../components/Person";
 import CustomizedSlider from "./sliderFilter";
-import Filter from "./Filter"
+import Filter from "./Filters/Filter"
+import SelectFilter from "./Filters/SelectFilter";
+import Grid from "@material-ui/core/Grid";
+
 
 const App = props => {
   const [items, setItems] = useState([]);
@@ -19,8 +22,10 @@ const App = props => {
 
     return (
     <div className="App">
-        <Filter setFilter={setTimeZoneFilter}>Timezone filter: </Filter>
+      <Grid container direction="column" justify="flex-start" alignItems="flex-start">
+        <SelectFilter setFilter={setTimeZoneFilter} filter={timeZoneFilter} items={items}>Timezone filter: </SelectFilter>
         <Filter setFilter={setNameFilter}>Name filter: </Filter>
+      </Grid>
       <CustomizedSlider timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
       <ul>
         <div>{PersonRender(items, setItems, nameFilter, timeFilter, timeZoneFilter)}</div>
