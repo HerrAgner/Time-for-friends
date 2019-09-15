@@ -13,9 +13,6 @@ const getOne = (id, collection) => {
     const request = axios.get(`${url}/${id}`)
     return request.then(response => response.data)
 }
-
-
-
 const populatedSearch = (item, collection) => {
     // const name = encodeURIComponent(JSON.stringify({name: item.name}))
     // let populate = encodeURIComponent(JSON.stringify([item.populate]))
@@ -57,5 +54,11 @@ const deleteObject = (id, collection) => {
     const request = axios.delete(`${url}/${id}`)
     return request.then(response => response.data)
 }
+
+// const getMapKey = () => {
+//     let url = baseUrl + "map"
+//     const request = axios.get(`${url}`)
+//     return request.then(response => response.data)
+// }
 
 export default { getAll, getOne, create, update, deleteObject, populatedSearch, querySearch }

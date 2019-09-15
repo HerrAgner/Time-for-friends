@@ -1,10 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+// const dotenv = require("dotenv").config()
+// const axios = require("axios")
 
-router.get("/api", (req, res) => {
-    res.json("Test")
-});
+
+// router.get("/api/map", async (req, res) => {
+//         // let url = `https://geocoder.api.here.com/6.2/geocode.json?app_id=${process.env.HERE_API_ID}&app_code=${process.env.HERE_API_CODE}&searchtext=${req.query.search}`
+//         // const request = axios.get(url)
+//         // return request.then(response => res.json(response.data.Response.View[0].Result[0].Location))
+//         await res.json(process.env.REACT_APP_API_KEY)
+// });
 
 router.get("/api/search/:collection/", (req, res) => {
     console.log(Object.keys(req.query)[0]);

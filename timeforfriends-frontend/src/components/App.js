@@ -15,7 +15,8 @@ const App = props => {
     });
   }, [props]);
 
-  return (
+
+    return (
     <div className="App">
         <Filter setFilter={setTimeZoneFilter}>Timezone filter: </Filter>
         <Filter setFilter={setNameFilter}>Name filter: </Filter>

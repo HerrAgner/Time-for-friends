@@ -15,9 +15,6 @@ mongoose.connect(`mongodb://localhost/${dbName}`, {
     useUnifiedTopology: true
 });
 
-
-
-
 global.db = mongoose.connection;
 db.on("error", () => console.log("Could not connect to DB"));
 db.once("open", () => {

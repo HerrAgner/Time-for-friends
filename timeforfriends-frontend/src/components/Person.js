@@ -12,55 +12,6 @@ import {
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 
-const PersonItem = ({person, deleteItem}) => {
-  return (
-    <ExpansionPanel
-      TransitionProps={{ unmountOnExit: true }}
-      style={{ width: "50%" }}
-    >
-      <ExpansionPanelSummary>
-        <Grid
-          container
-          direction="row"
-          justify="space-around"
-          alignItems="center"
-        >
-          {person.name.firstName} {person.name.lastName}
-          <Clock timeZone={person.location.timeZone} />
-        </Grid>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
-        <Grid
-          container
-          item
-          direction="column"
-          justify="center"
-          alignItems="center"
-        >
-          <p>Country: {person.location.country}</p>
-          <p>City: {person.location.city}</p>
-          <p>Timezone: {person.location.timeZone}</p>
-          <Map
-            apikey="lJGja1orB-44nvo6kd9bg99cdqsq3h2eRLNsvHlZoH8"
-            zoom="12"
-            geocodingParams={person.location.city}
-            _id={person._id}
-          />
-          <IconButton aria-label="delete" onClick={deleteItem}>
-            <DeleteIcon />
-          </IconButton>
-        </Grid>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
-  );
-};
-
-const deleteFromDb = (p, items, setItems) => {
-  mongoAPI
-    .deleteObject(p._id, "person")
-    .then(() => setItems(items.filter(item => item._id !== p._id)));
-};
-
 const PersonRender = (items, setItems, filter, timeFilter, timeZoneFilter) => {
   let max = timeFilter.max % 1 === 0 ? 0 : 30;
   let min = timeFilter.min % 1 === 0 ? 0 : 30;
@@ -91,7 +42,7 @@ const PersonRender = (items, setItems, filter, timeFilter, timeZoneFilter) => {
     })
     .map(p => (
       <PersonItem
-          key={p._id}
+        key={p._id}
         person={p}
         deleteItem={() => deleteFromDb(p, items, setItems)}
       />
@@ -111,5 +62,54 @@ const timeForComparison = p => {
   );
   return [currHour, currMin];
 };
+
+const PersonItem = ({ person, deleteItem }) => {
+  return (
+      <ExpansionPanel
+          TransitionProps={{ unmountOnExit: true }}
+          style={{ width: "50%" }}
+      >
+        <ExpansionPanelSummary>
+          <Grid
+              container
+              direction="row"
+              justify="space-around"
+              alignItems="center"
+          >
+            {person.name.firstName} {person.name.lastName}
+            <Clock timeZone={person.location.timeZone} />
+          </Grid>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <Grid
+              container
+              item
+              direction="column"
+              justify="center"
+              alignItems="center"
+          >
+            <p>Country: {person.location.country}</p>
+            <p>City: {person.location.city}</p>
+            <p>Timezone: {person.location.timeZone}</p>
+            <Map
+                zoom="12"
+                city={person.location.city}
+                country={person.location.country}
+                _id={person._id}
+            />
+            <IconButton aria-label="delete" onClick={deleteItem}>
+              <DeleteIcon />
+            </IconButton>
+          </Grid>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+  );
+};
+const deleteFromDb = (p, items, setItems) => {
+  mongoAPI
+      .deleteObject(p._id, "person")
+      .then(() => setItems(items.filter(item => item._id !== p._id)));
+};
+
 
 export default PersonRender;
