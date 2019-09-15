@@ -4,16 +4,51 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Clock from "./Clock";
 import moment from "moment-timezone";
+import Map from "./Map";
+import {
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  ExpansionPanel
+} from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
 
 const PersonItem = props => {
   return (
-    <div>
-      {props.firstName} {props.lastName} {props.country} {props.city}
-      <Clock timeZone={props.timeZone} />
-      <IconButton aria-label="delete" onClick={props.deleteItem}>
-        <DeleteIcon />
-      </IconButton>
-    </div>
+    <ExpansionPanel
+      TransitionProps={{ unmountOnExit: true }}
+      style={{ width: "50%" }}
+    >
+      <ExpansionPanelSummary>
+        <Grid
+          container
+          direction="row"
+          justify="space-around"
+          alignItems="center"
+        >
+          {props.firstName} {props.lastName}
+          <Clock timeZone={props.timeZone} />
+        </Grid>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails>
+        <Grid container item direction="column" justify="center" alignItems="center">
+            <p>Country: {props.country}</p>
+            <p>City: {props.city}</p>
+            <p>Timezone: {props.timeZone}</p>
+          <Map
+            app_id="6acCDT0MEzbQ1GXdEGlq"
+            app_code="TP08R0DpiMzU71ww00tuFQ"
+            lat="42.345978"
+            lng="-83.0405"
+            zoom="12"
+            geocodingParams={props.city}
+            _id={props.id}
+          />
+          <IconButton aria-label="delete" onClick={props.deleteItem}>
+            <DeleteIcon />
+          </IconButton>
+        </Grid>
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
   );
 };
 

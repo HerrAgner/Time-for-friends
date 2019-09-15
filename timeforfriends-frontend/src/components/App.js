@@ -3,11 +3,12 @@ import "../style/App.css";
 import mongoService from "../api/mongoAPI";
 import PersonRender from "../components/Person";
 import CustomizedSlider from "./sliderFilter";
+import Map from "./Map";
 
 const App = props => {
   const [items, setItems] = useState([]);
   const [filter, setFilter] = useState("");
-  const [timeFilter, setTimeFilter] = useState({min:0, max:24})
+  const [timeFilter, setTimeFilter] = useState({ min: 0, max: 24 });
   useEffect(() => {
     mongoService.getAll(props.match.params.collection || "person").then(res => {
       setItems(res);
@@ -17,7 +18,7 @@ const App = props => {
   return (
     <div className="App">
       <Filter setFilter={setFilter} />
-      <CustomizedSlider timeFilter={timeFilter} setTimeFilter={setTimeFilter}/>
+      <CustomizedSlider timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
       <ul>
         <div>{PersonRender(items, setItems, filter, timeFilter)}</div>
       </ul>
@@ -25,15 +26,14 @@ const App = props => {
   );
 };
 
-
 const Filter = ({ setFilter }) => {
-    const handleFilter = event => setFilter(event.target.value);
+  const handleFilter = event => setFilter(event.target.value);
 
-    return (
-        <div>
-            filter: <input onKeyUp={handleFilter} />
-        </div>
-    );
+  return (
+    <div>
+      filter: <input onKeyUp={handleFilter} />
+    </div>
+  );
 };
 
 export default App;
