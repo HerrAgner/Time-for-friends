@@ -3,6 +3,7 @@ import "../style/App.css";
 import mongoService from "../api/mongoAPI";
 import PersonRender from "../components/Person";
 import CustomizedSlider from "./sliderFilter";
+import Filter from "./Filter"
 
 const App = props => {
   const [items, setItems] = useState([]);
@@ -28,14 +29,6 @@ const App = props => {
   );
 };
 
-const Filter = (props) => {
-  const handleFilter = event => props.setFilter(event.target.value);
 
-  return (
-    <div>
-        {props.children} <input onKeyUp={handleFilter} />
-    </div>
-  );
-};
 
 export default App;
