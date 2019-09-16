@@ -7,7 +7,7 @@ const initialState = {
     favourites: []
 };
 
-function reducer(state, action) {
+const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_DATA':
             return { ...state,
@@ -20,7 +20,7 @@ function reducer(state, action) {
         default:
             return state;
     }
-}
+};
 
 export function StoreProvider(props) {
     const [state, dispatch] = React.useReducer(reducer, initialState);

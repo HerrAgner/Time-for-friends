@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useReducer} from "react";
 import "../style/App.css";
 import mongoService from "../api/mongoAPI";
 import PersonRender from "../components/Person";
@@ -6,22 +6,22 @@ import { Store } from "../Store";
 import FilterAndSort from "./Filters/FilterAndSort";
 
 const App = props => {
-  const { state, dispatch } = React.useContext(Store);
-  const [items, setItems] = useState([]);
+  const [initalItems, setInitialItems] = useState([]);
+  // const [items, dispatch] = useReducer(reducer, []);
   const [nameFilter, setNameFilter] = useState({ name: "" });
   const [timeZoneFilter, setTimeZoneFilter] = useState("");
   const [timeFilter, setTimeFilter] = useState({ min: 0, max: 24 });
-  const [sort, setSort] = useState("name");
+  const [sort, setSort] = useState("NAME");
   useEffect(() => {
     mongoService.getAll(props.match.params.collection || "person").then(res => {
-      setItems(res);
+      setInitialItems(res);
+      // dispatch({ type: "SET", payload: res })
     });
   }, [props]);
-
   return (
     <div className="App">
       <FilterAndSort
-        items={items}
+          items={initalItems}
         setNameFilter={setNameFilter}
         setSort={setSort}
         sort={sort}
@@ -33,8 +33,8 @@ const App = props => {
       <ul>
         <div>
           {PersonRender(
-            items,
-            setItems,
+            initalItems,
+            setInitialItems,
             nameFilter,
             timeFilter,
             timeZoneFilter,
@@ -45,5 +45,33 @@ const App = props => {
     </div>
   );
 };
+
+// const reducer = (items, action) => {
+//   switch (action.type) {
+//     case "SET":
+//       return action.payload
+//     case "NAMEFILTER":
+//       return [
+//         ...action.initState.filter(p =>
+//             p.name.firstName
+//                 .toUpperCase()
+//                 .includes(action.payload.toUpperCase())
+//         )
+//       ];
+//     case "TIMEZONE":
+//       return [
+//         ...action.initState.filter(p =>
+//             p.location.timeZone
+//                 .toUpperCase()
+//                 .includes(action.payload.toUpperCase())
+//         )
+//       ];
+//     case "MIN":
+//     case "MAX":
+//     case "NAMESORT":
+//     case "TIMEZONESORT":
+//     default:
+//   }
+// };
 
 export default App;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useReducer } from "react";
 import NameFilter from "./NameFilter";
 import SliderFilter from "./SliderFilter";
 import TimeZoneFilter from "./SelectFilter";
@@ -15,6 +15,14 @@ const FilterAndSort = ({
   timeFilter,
   setTimeFilter
 }) => {
+  // const handleFilterInput = e => {
+  //   dispatch({
+  //     type: "NAMEFILTER",
+  //     payload: e.target.value,
+  //    initState: items
+  //   });
+  // };
+
   return (
     <>
       <Grid
@@ -23,7 +31,12 @@ const FilterAndSort = ({
         justify="flex-start"
         alignItems="flex-start"
       >
-        <NameFilter setNameFilter={setNameFilter}>Name filter: </NameFilter>
+        <NameFilter
+          setNameFilter={setNameFilter}
+          // handle={e => handleFilterInput(e)}
+        >
+          Name filter:{" "}
+        </NameFilter>
         <TimeZoneFilter
           setTimeZoneFilter={setTimeZoneFilter}
           timeZoneFilter={timeZoneFilter}
