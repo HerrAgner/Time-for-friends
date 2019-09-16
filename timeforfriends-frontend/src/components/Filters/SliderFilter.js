@@ -212,7 +212,7 @@ const TimeDisplay = ({ timeFilter }) => {
   );
 };
 
-const CustomizedSlider = props => {
+const SliderFilter = props => {
   const classes = useStyles();
   return (
     <Paper className={classes.root}>
@@ -241,4 +241,4 @@ const CustomizedSlider = props => {
     </Paper>
   );
 };
-export default CustomizedSlider;
+export default SliderFilter;

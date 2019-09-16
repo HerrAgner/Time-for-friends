@@ -12,14 +12,14 @@ import {
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 
-const PersonRender = (items, setItems, filter, timeFilter, timeZoneFilter) => {
+const PersonRender = (items, setItems, filter, timeFilter, timeZoneFilter, soret) => {
   let max = timeFilter.max % 1 === 0 ? 0 : 30;
   let min = timeFilter.min % 1 === 0 ? 0 : 30;
   return items
     .filter(p =>
       p.location.timeZone.toUpperCase().includes(timeZoneFilter.toUpperCase())
     )
-    .filter(p => p.name.firstName.toUpperCase().includes(filter.toUpperCase()))
+    .filter(p => p.name.firstName.toUpperCase().includes(filter.name.toUpperCase()))
     .filter(p => {
       if (
         timeForComparison(p)[0] < Math.floor(timeFilter.max) ||

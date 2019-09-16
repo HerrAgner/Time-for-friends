@@ -12,23 +12,22 @@ const useStyles = makeStyles(theme => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 200
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2)
   }
 }));
 
-const Filter = ({ setFilter, children }) => {
-  const classes = useStyles();
-  const handleFilter = event => setFilter(event.target.value);
 
+const NameFilter = ({ setNameFilter}) => {
+  const classes = useStyles();
+  const handleFilter = event => setNameFilter({ name: event.target.value });
   return (
-    <FormControl className={classes.formControl}>
-        <p></p>
+    <div>
+      <FormControl className={classes.formControl}>
+        <p />
         <InputLabel htmlFor="name-filter">Name filter</InputLabel>
         <TextField onKeyUp={handleFilter} />
-    </FormControl>
+      </FormControl>
+    </div>
   );
 };
 
-export default Filter;
+export default NameFilter;
