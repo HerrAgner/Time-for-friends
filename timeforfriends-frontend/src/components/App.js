@@ -4,8 +4,7 @@ import mongoService from "../api/mongoAPI";
 import PersonRender from "../components/Person";
 import FilterAndSort from "./Filters/FilterAndSort";
 import { makeStyles } from "@material-ui/core";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
+import WorldMap from "./WorldMap";
 
 const useStyles = makeStyles(theme => ({
   maino: {
@@ -38,6 +37,7 @@ const App = props => {
 
   return (
     <div>
+      <WorldMap items={initalItems}/>
       <div className={classes.maino}>
         <FilterAndSort
           items={initalItems}
