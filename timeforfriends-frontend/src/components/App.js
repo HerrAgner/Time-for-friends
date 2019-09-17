@@ -8,12 +8,17 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(5)
+  maino: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    // width: "80vw"
   },
-  margin: {
-    height: theme.spacing(5)
-  }
+  personContainer: {
+    minWidth: "80%",
+    padding: 0
+}
 }));
 
 const App = props => {
@@ -32,8 +37,8 @@ const App = props => {
   }, [props]);
 
   return (
-    <Box className="main-box">
-      <Container className="app">
+    <div>
+      <div className={classes.maino}>
         <FilterAndSort
           items={initalItems}
           setNameFilter={setNameFilter}
@@ -44,7 +49,7 @@ const App = props => {
           setTimeFilter={setTimeFilter}
           timeFilter={timeFilter}
         />
-        <ul className="person-container">
+        <ul className={classes.personContainer}>
           <div>
             {PersonRender(
               initalItems,
@@ -56,8 +61,8 @@ const App = props => {
             )}
           </div>
         </ul>
-      </Container>
-    </Box>
+      </div>
+    </div>
   );
 };
 

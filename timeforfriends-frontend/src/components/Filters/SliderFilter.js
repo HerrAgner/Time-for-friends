@@ -3,12 +3,12 @@ import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Slider from "@material-ui/core/Slider";
 import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    // width: 600 + theme.spacing(5) * 2,
-    width: "100%",
-    padding: theme.spacing(5)
+    // // width: 600 + theme.spacing(5) * 2,
+    width: "100%"
   },
   margin: {
     // height: theme.spacing(5)
@@ -176,7 +176,7 @@ const TimeSlider = withStyles({
   root: {
     color: "#52af77",
     height: 8,
-    padding: '13px 0'
+    padding: '13px 0',
   },
   thumb: {
     height: 24,
@@ -200,7 +200,7 @@ const TimeSlider = withStyles({
   rail: {
     height: 8,
     borderRadius: 4
-  }
+  },
 })(Slider);
 
 const TimeDisplay = ({ timeFilter }) => {
@@ -217,7 +217,12 @@ const TimeDisplay = ({ timeFilter }) => {
 const SliderFilter = props => {
   const classes = useStyles();
   return (
-    <Paper className={classes.root}>
+    <div className={classes.root} style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column"
+    }}>
       <TimeSlider
         defaultValue={[0, 24]}
         valueLabelDisplay="auto"
@@ -229,7 +234,7 @@ const SliderFilter = props => {
           })
         }
         step={0.5}
-        marks={marks}
+        style={{maxWidth: "98%"}}
       />
       <Grid
         container
@@ -240,7 +245,7 @@ const SliderFilter = props => {
         <TimeDisplay timeFilter={props.timeFilter.min} />
         <TimeDisplay timeFilter={props.timeFilter.max} />
       </Grid>
-    </Paper>
+    </div>
   );
 };
 export default SliderFilter;

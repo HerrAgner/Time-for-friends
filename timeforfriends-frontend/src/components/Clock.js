@@ -10,7 +10,6 @@ const Clock = timeZone => {
 
   useEffect(() => {
    const timeout = setTimeout(() => {
-       console.log("clock tick!");
       setTime(
         moment()
           .tz(timeZone.timeZone)

@@ -29,8 +29,8 @@ const FilterAndSort = ({
           items={items}
         />
         <SortButtons setSort={setSort} sort={sort} />
+        <SliderFilter timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
       </Card>
-      <SliderFilter timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
     </Container>
   );
 };
