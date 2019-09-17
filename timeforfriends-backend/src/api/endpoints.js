@@ -85,6 +85,7 @@ router.put("/api/:collection/:id", (req, res) => {
 });
 
 router.post("/api/:collection", (req, res) => {
+console.log(req.body);
     mongoose
         .model(req.params.collection)
         .create(req.body)

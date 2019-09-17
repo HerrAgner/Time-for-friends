@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import mongoAPI from "../api/mongoAPI";
+import axios from "axios";
 
 const PersonForm = () => {
   const [newItem, setNewItem] = useState({});
+  useEffect(() => {
+     Object.keys(newItem).forEach((name) => {
+      if (Object.keys(newItem[name]).indexOf("timeZone") > -1) {
+            mongoAPI.create(newItem, "person").then(res => {
+            console.log(res);
+          })
+      }
+    });
+  }, [newItem])
 
   const handleNewItemChange = (event, itemType) => {
-    console.log(itemType);
     switch (itemType) {
       case "name":
         setNewItem({
@@ -38,11 +47,21 @@ const PersonForm = () => {
   };
 
   const postToDb = () => {
-    mongoAPI.create(newItem, "person").then(res => {
-      // setItems([...items, res]);
-      console.log(res);
-    });
-    // setNewItem({});
+    let url = `https://geocoder.api.here.com/6.2/geocode.json?app_id=${
+      process.env.REACT_APP_API_ID
+    }&app_code=${process.env.REACT_APP_API_CODE}&searchtext=${
+      newItem.location.country
+    }+${newItem.location.city}&gen=9&locationattributes=tz`;
+    axios.get(url).then(response => {
+      let tz = response.data.Response.View[0].Result[0].Location.AdminInfo.TimeZone.id
+      setNewItem({
+        ...newItem,
+        location: {
+          ...newItem.location,
+          timeZone: tz
+        }
+      })
+    })
   };
 
   return (
@@ -91,13 +110,13 @@ const PersonForm = () => {
             onChange={e => handleNewItemChange(e, "location")}
             style={{ margin: 8 }}
           />
-          <TextField
-            id="timeZone-newItem"
-            label="Timezone"
-            name="timeZone"
-            onChange={e => handleNewItemChange(e, "location")}
-            style={{ margin: 8 }}
-          />
+          {/*<TextField*/}
+          {/*  id="timeZone-newItem"*/}
+          {/*  label="Timezone"*/}
+          {/*  name="timeZone"*/}
+          {/*  onChange={e => handleNewItemChange(e, "location")}*/}
+          {/*  style={{ margin: 8 }}*/}
+          {/*/>*/}
         </Grid>
         <Grid
           container
@@ -105,7 +124,9 @@ const PersonForm = () => {
           justify="space-evenly"
           alignItems="center"
         >
-          <Button variant="contained" onClick={() => postToDb()}>Post</Button>
+          <Button variant="contained" onClick={() => postToDb()}>
+            Post
+          </Button>
           {/*<Button variant="contained">Update</Button>*/}
         </Grid>
       </Grid>
