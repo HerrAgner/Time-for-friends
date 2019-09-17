@@ -104,7 +104,7 @@ const PersonItem = ({ person, deleteItem }) => {
   return (
     <ExpansionPanel
       TransitionProps={{ unmountOnExit: true }}
-      style={{ width: "50%" }}
+      style={{ width: "100%" }}
     >
       <ExpansionPanelSummary>
         <Grid

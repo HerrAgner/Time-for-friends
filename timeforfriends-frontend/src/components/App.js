@@ -1,9 +1,20 @@
-import React, {useState, useEffect, useReducer} from "react";
+import React, { useState, useEffect} from "react";
 import "../style/App.css";
 import mongoService from "../api/mongoAPI";
 import PersonRender from "../components/Person";
-import { Store } from "../Store";
 import FilterAndSort from "./Filters/FilterAndSort";
+import { makeStyles } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(5)
+  },
+  margin: {
+    height: theme.spacing(5)
+  }
+}));
 
 const App = props => {
   const [initalItems, setInitialItems] = useState([]);
@@ -12,37 +23,41 @@ const App = props => {
   const [timeZoneFilter, setTimeZoneFilter] = useState("");
   const [timeFilter, setTimeFilter] = useState({ min: 0, max: 24 });
   const [sort, setSort] = useState("NAME");
+  const classes = useStyles();
   useEffect(() => {
-    mongoService.getAll(props.match.params.collection || "person").then(res => {
+    mongoService.getAll("person").then(res => {
       setInitialItems(res);
       // dispatch({ type: "SET", payload: res })
     });
   }, [props]);
+
   return (
-    <div className="App">
-      <FilterAndSort
+    <Box className="main-box">
+      <Container className="app">
+        <FilterAndSort
           items={initalItems}
-        setNameFilter={setNameFilter}
-        setSort={setSort}
-        sort={sort}
-        timeZoneFilter={timeZoneFilter}
-        setTimeZoneFilter={setTimeZoneFilter}
-        setTimeFilter={setTimeFilter}
-        timeFilter={timeFilter}
-      />
-      <ul>
-        <div>
-          {PersonRender(
-            initalItems,
-            setInitialItems,
-            nameFilter,
-            timeFilter,
-            timeZoneFilter,
-            sort
-          )}
-        </div>
-      </ul>
-    </div>
+          setNameFilter={setNameFilter}
+          setSort={setSort}
+          sort={sort}
+          timeZoneFilter={timeZoneFilter}
+          setTimeZoneFilter={setTimeZoneFilter}
+          setTimeFilter={setTimeFilter}
+          timeFilter={timeFilter}
+        />
+        <ul className="person-container">
+          <div>
+            {PersonRender(
+              initalItems,
+              setInitialItems,
+              nameFilter,
+              timeFilter,
+              timeZoneFilter,
+              sort
+            )}
+          </div>
+        </ul>
+      </Container>
+    </Box>
   );
 };
 

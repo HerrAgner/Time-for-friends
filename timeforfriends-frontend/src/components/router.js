@@ -3,26 +3,28 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import App from "./App";
 import PersonForm from "../components/PersonForm"
 import mongoService from "../api/mongoAPI";
+import Navigation from "./Navigation";
 
 function reactRouter() {
 
     return (
         <Router>
-            <div>
-                <ul>
-                    <li>
-                        <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to="/post">Post</Link>
-                    </li>
-                </ul>
-                <Route exact path="/" component={App} />
-                {/*<Route exact path="/:collection" component={App} />*/}
-                <Route exact path="/post" component={PersonForm} />
-                <Route path="/about" component={About} />
-                <Route path="/search" component={Search} />
-            </div>
+            <Navigation/>
+            {/*<div>*/}
+            {/*    <ul>*/}
+            {/*        <li>*/}
+            {/*            <Link to="/">Home</Link>*/}
+            {/*        </li>*/}
+            {/*        <li>*/}
+            {/*            <Link to="/post">Post</Link>*/}
+            {/*        </li>*/}
+            {/*    </ul>*/}
+            {/*    <Route exact path="/" component={App} />*/}
+            {/*    /!*<Route exact path="/:collection" component={App} />*!/*/}
+            {/*    <Route exact path="/post" component={PersonForm} />*/}
+            {/*    <Route path="/about" component={About} />*/}
+            {/*    <Route path="/search" component={Search} />*/}
+            {/*</div>*/}
         </Router>
     );
 }

@@ -10,8 +10,7 @@ const useStyles = makeStyles(theme => ({
     flexWrap: "wrap"
   },
   formControl: {
-    margin: theme.spacing(1),
-    minWidth: 200
+    minWidth: "80%"
   }
 }));
 
@@ -20,11 +19,11 @@ const NameFilter = ({ setNameFilter}) => {
   const classes = useStyles();
   const handleFilter = event => setNameFilter({ name: event.target.value });
   return (
-    <div>
+    <div className={classes.root}>
       <FormControl className={classes.formControl}>
-        <p />
-        <InputLabel htmlFor="name-filter">Name filter</InputLabel>
-        <TextField onKeyUp={handleFilter} />
+        <TextField
+            placeholder="Name filter"
+            onKeyUp={handleFilter} />
       </FormControl>
     </div>
   );

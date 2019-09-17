@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './style/index.css';
-import App from './components/router';
+import App from './components/Navigation';
 import * as serviceWorker from './serviceWorker';
 import { StoreProvider } from './Store';
 

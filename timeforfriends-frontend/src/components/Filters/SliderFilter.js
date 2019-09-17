@@ -6,11 +6,12 @@ import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: 600 + theme.spacing(5) * 2,
+    // width: 600 + theme.spacing(5) * 2,
+    width: "100%",
     padding: theme.spacing(5)
   },
   margin: {
-    height: theme.spacing(5)
+    // height: theme.spacing(5)
   }
 }));
 const marks = [
@@ -174,7 +175,8 @@ const marks = [
 const TimeSlider = withStyles({
   root: {
     color: "#52af77",
-    height: 8
+    height: 8,
+    padding: '13px 0'
   },
   thumb: {
     height: 24,
