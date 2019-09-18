@@ -70,6 +70,7 @@ router.get("/api/:collection/:id", (req, res) => {
         });
 });
 
+
 router.put("/api/:collection/:id", (req, res) => {
     mongoose
         .model(req.params.collection)
