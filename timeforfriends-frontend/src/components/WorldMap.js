@@ -1,19 +1,18 @@
 import React, { useEffect } from "react";
 
 const WorldMap = props => {
-
   // let map
   useEffect(() => {
-      let platform = new window.H.service.Platform({
-          apikey: process.env.REACT_APP_API_KEY
-      });
-      let items = props.items;
+    let platform = new window.H.service.Platform({
+      apikey: process.env.REACT_APP_API_KEY
+    });
+    let items = props.items;
     if (items.length) {
       let container = reRenderMap();
       let defaultLayers = platform.createDefaultLayers();
       const map = new window.H.Map(container, defaultLayers.vector.normal.map, {
-        zoom: 2,
-        center: { lat: 15, lng: 5 }
+        zoom: window.innerWidth > 600 ? 3 : 1,
+        center: { lat: 25, lng: 5 }
       });
 
       let dataPoints = [];
@@ -137,18 +136,18 @@ const WorldMap = props => {
       });
 
       // eslint-disable-next-line
-      let ui = window.H.ui.UI.createDefault(map, defaultLayers);
+      const ui = window.H.ui.UI.createDefault(map, defaultLayers);
       // eslint-disable-next-line
-      new window.H.mapevents.Behavior(new window.H.mapevents.MapEvents(map));
+      const behavior = new window.H.mapevents.Behavior(new window.H.mapevents.MapEvents(map));
 
       // let addMarkerToGroup = (group, position, html) => {
       //   let marker = new window.H.map.Marker(position);
       //   marker.setData(html);
       //   group.addObject(marker);
       // };
-        window.addEventListener('resize', function () {
-            map.getViewPort().resize();
-        });
+      window.addEventListener("resize", function() {
+        map.getViewPort().resize();
+      });
     }
   }, [props]);
 
@@ -161,19 +160,14 @@ const WorldMap = props => {
     container.setAttribute("id", "worldmap");
     container.setAttribute(
       "style",
-      "width: 100%; height: 50vh; background: grey"
+      "width: 100vw; height: 95vh; background: grey"
     );
     parent.append(container);
     return container;
   };
 
-
   return (
     <div id="parent">
-      <div
-        id="worldmap"
-        style={{ width: "100%", height: "50vh", background: "grey" }}
-      />
     </div>
   );
 };

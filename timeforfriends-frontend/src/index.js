@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import './style/index.css';
 import App from './components/Navigation';
 import * as serviceWorker from './serviceWorker';
-import { StoreProvider } from './Store';
+import {Store, StoreProvider} from './Store';
+
 
 
 ReactDOM.render(<StoreProvider><App /></StoreProvider>, document.getElementById('root'));

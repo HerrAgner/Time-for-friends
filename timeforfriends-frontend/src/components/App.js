@@ -29,19 +29,10 @@ const App = props => {
   const [timeFilter, setTimeFilter] = useState({ min: 0, max: 24 });
   const [sort, setSort] = useState("NAME");
   const classes = useStyles();
-  useEffect(() => {
-    mongoService.getAll("person").then(res => {
-      // dispatch({ type: "SET", payload: res })
-      return dispatch({
-        type: 'PEOPLE',
-        payload: res
-      });
-    });
-  }, [dispatch]);
+
 
   return (
     <div>
-      <WorldMap items={state.people}/>
       <div className={classes.maino}>
         <FilterAndSort
           setNameFilter={setNameFilter}

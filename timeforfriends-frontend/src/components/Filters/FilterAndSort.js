@@ -20,8 +20,8 @@ const FilterAndSort = ({
   const { state } = useContext(Store);
   const classes = useStyles();
   return (
-    <Container maxWidth="md" className={classes.root}>
-      <Card className={classes.card}>
+    <Container maxWidth="md" className={classes.root} style={{padding: 0}}>
+      <Card className={classes.card} style={{margin:"10px", padding:"10px"}}>
         <NameFilter setNameFilter={setNameFilter} className={classes.textField}>Name filter: </NameFilter>
         <TimeZoneFilter
           setTimeZoneFilter={setTimeZoneFilter}
