@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 
 const WorldMap = props => {
-  let platform = new window.H.service.Platform({
-    apikey: process.env.REACT_APP_API_KEY
-  });
-  let items = props.items;
+
   // let map
   useEffect(() => {
+      let platform = new window.H.service.Platform({
+          apikey: process.env.REACT_APP_API_KEY
+      });
+      let items = props.items;
     if (items.length) {
       let container = reRenderMap();
       let defaultLayers = platform.createDefaultLayers();
@@ -74,10 +75,8 @@ const WorldMap = props => {
             );
             map.addLayer(layer);
             clusteredDataProvider.addEventListener("tap", function(evt) {
-              // Log data bound to the marker that has been tapped:
               let cnt = evt.target.getData();
-              // if those data contain a data object it was a marker to be clicked
-              // mine has a string (not yet set in the code above) which I show inside an InfoBubble
+
               if (typeof cnt.a.data !== "undefined") {
                 console.log(cnt.a.data);
                 let bubble = new window.H.ui.InfoBubble(
@@ -88,47 +87,43 @@ const WorldMap = props => {
                 );
                 ui.addBubble(bubble);
               } else {
-                // console.log(evt.currentPointer);
-                // console.log(evt.currentPointer.viewportX);
-
-                // otherwise it was a cluster icon which doesn't contain a data object
-                // set the map center to the coordinates where the user clicked
-                // "true" is to have a smooth transition
                 let bubbleText = [];
                 cnt.forEachEntry(event => {
                   if (event.a.data) {
-
-                    bubbleText.push({info: `${event.a.data}`, pos: event.getPosition()});
+                    bubbleText.push({
+                      info: `${event.a.data}`,
+                      pos: event.getPosition()
+                    });
                   }
                 });
-                console.log(bubbleText[0].info);
                 map.setCenter(
                   map.screenToGeo(
                     evt.currentPointer.viewportX,
                     evt.currentPointer.viewportY
                   )
                 );
-                  let bubble
-                if(bubbleText.length > 1) {
-                    bubble = new window.H.ui.InfoBubble(
-                        evt.target.getGeometry(),
-                        {
-                            content: bubbleText.map(content => content.info).join(' ')
-                        }
-                    );
+                let bubble;
+                if (bubbleText.length > 1) {
+                  bubble = new window.H.ui.InfoBubble(
+                    evt.target.getGeometry(),
+                    {
+                      content: bubbleText.map(content => content.info).join(" ")
+                    }
+                  );
                 } else {
-                    bubble = new window.H.ui.InfoBubble(
-                        new window.H.geo.Point(bubbleText[0].pos.lat, bubbleText[0].pos.lng),
-                        {
-                            content: bubbleText[0].info
-                        }
-                    );
+                  bubble = new window.H.ui.InfoBubble(
+                    new window.H.geo.Point(
+                      bubbleText[0].pos.lat,
+                      bubbleText[0].pos.lng
+                    ),
+                    {
+                      content: bubbleText[0].info
+                    }
+                  );
                 }
                 ui.addBubble(bubble);
 
-                // increase the zoom level by an amount which fits your needs
-                // again "true" is to have a smooth transition
-                map.setZoom(map.getZoom()+2, true);
+                map.setZoom(map.getZoom() + 2, true);
               }
             });
           }
@@ -146,13 +141,16 @@ const WorldMap = props => {
       // eslint-disable-next-line
       new window.H.mapevents.Behavior(new window.H.mapevents.MapEvents(map));
 
-      let addMarkerToGroup = (group, position, html) => {
-        let marker = new window.H.map.Marker(position);
-        marker.setData(html);
-        group.addObject(marker);
-      };
+      // let addMarkerToGroup = (group, position, html) => {
+      //   let marker = new window.H.map.Marker(position);
+      //   marker.setData(html);
+      //   group.addObject(marker);
+      // };
+        window.addEventListener('resize', function () {
+            map.getViewPort().resize();
+        });
     }
-  }, [props.items]);
+  }, [props]);
 
   const reRenderMap = () => {
     let parent = document.getElementById("parent");
@@ -168,6 +166,7 @@ const WorldMap = props => {
     parent.append(container);
     return container;
   };
+
 
   return (
     <div id="parent">

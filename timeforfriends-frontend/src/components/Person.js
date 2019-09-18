@@ -1,28 +1,29 @@
-import React from "react";
+import React, {useContext} from "react";
 import mongoAPI from "../api/mongoAPI";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Clock from "./Clock";
 import moment from "moment-timezone";
-import Map from "./Map";
+// import Map from "./Map";
 import {
   ExpansionPanelDetails,
   ExpansionPanelSummary,
   ExpansionPanel
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
+import {Store} from "../Store";
+
 
 const PersonRender = (
-  items,
-  setItems,
   filter,
   timeFilter,
   timeZoneFilter,
   sort
 ) => {
+  const { state, dispatch } = useContext(Store);
   let max = timeFilter.max % 1 === 0 ? 0 : 30;
   let min = timeFilter.min % 1 === 0 ? 0 : 30;
-  let tempArray = sortList(items, sort)
+  let tempArray = sortList(state.people, sort)
   return tempArray
     .filter(p =>
       p.location.timeZone.toUpperCase().includes(timeZoneFilter.toUpperCase())
@@ -54,7 +55,7 @@ const PersonRender = (
       <PersonItem
         key={p._id}
         person={p}
-        deleteItem={() => deleteFromDb(p, items, setItems)}
+        deleteItem={() => deleteFromDb(p, state, dispatch)}
       />
     ));
 };
@@ -128,12 +129,12 @@ const PersonItem = ({ person, deleteItem }) => {
           <p>Country: {person.location.country}</p>
           <p>City: {person.location.city}</p>
           <p>Timezone: {person.location.timeZone}</p>
-          <Map
-            zoom="12"
-            city={person.location.city}
-            country={person.location.country}
-            _id={person._id}
-          />
+          {/*<Map*/}
+          {/*  zoom="12"*/}
+          {/*  city={person.location.city}*/}
+          {/*  country={person.location.country}*/}
+          {/*  _id={person._id}*/}
+          {/*/>*/}
           <IconButton aria-label="delete" onClick={deleteItem}>
             <DeleteIcon />
           </IconButton>
@@ -142,10 +143,17 @@ const PersonItem = ({ person, deleteItem }) => {
     </ExpansionPanel>
   );
 };
-const deleteFromDb = (p, items, setItems) => {
+const deleteFromDb = (p, state, dispatch) => {
   mongoAPI
     .deleteObject(p._id, "person")
-    .then(() => setItems(items.filter(item => item._id !== p._id)));
+    .then(() => {
+      return dispatch({
+        type: 'PEOPLE',
+        payload: state.people.filter(item => item._id !== p._id)
+
+      });
+      // setItems(items.filter(item => item._id !== p._id))
+    });
 };
 
 export default PersonRender;

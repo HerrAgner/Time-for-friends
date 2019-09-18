@@ -1,15 +1,14 @@
-import React, { useReducer } from "react";
+import React, {useContext} from "react";
 import NameFilter from "./NameFilter";
 import SliderFilter from "./SliderFilter";
 import TimeZoneFilter from "./SelectFilter";
 import SortButtons from "./SortButtons";
-import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import {Store} from "../../Store";
 
 const FilterAndSort = ({
-  items,
   setNameFilter,
   setSort,
   sort,
@@ -18,6 +17,7 @@ const FilterAndSort = ({
   timeFilter,
   setTimeFilter
 }) => {
+  const { state } = useContext(Store);
   const classes = useStyles();
   return (
     <Container maxWidth="md" className={classes.root}>
@@ -26,7 +26,7 @@ const FilterAndSort = ({
         <TimeZoneFilter
           setTimeZoneFilter={setTimeZoneFilter}
           timeZoneFilter={timeZoneFilter}
-          items={items}
+          items={state.people}
         />
         <SortButtons setSort={setSort} sort={sort} />
         <SliderFilter timeFilter={timeFilter} setTimeFilter={setTimeFilter} />

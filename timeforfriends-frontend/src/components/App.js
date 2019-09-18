@@ -1,10 +1,11 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect, useContext} from "react";
 import "../style/App.css";
 import mongoService from "../api/mongoAPI";
 import PersonRender from "../components/Person";
 import FilterAndSort from "./Filters/FilterAndSort";
 import { makeStyles } from "@material-ui/core";
 import WorldMap from "./WorldMap";
+import  {Store} from "../Store";
 
 const useStyles = makeStyles(theme => ({
   maino: {
@@ -21,8 +22,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const App = props => {
-  const [initalItems, setInitialItems] = useState([]);
   // const [items, dispatch] = useReducer(reducer, []);
+  const { state, dispatch } = useContext(Store);
   const [nameFilter, setNameFilter] = useState({ name: "" });
   const [timeZoneFilter, setTimeZoneFilter] = useState("");
   const [timeFilter, setTimeFilter] = useState({ min: 0, max: 24 });
@@ -30,17 +31,19 @@ const App = props => {
   const classes = useStyles();
   useEffect(() => {
     mongoService.getAll("person").then(res => {
-      setInitialItems(res);
       // dispatch({ type: "SET", payload: res })
+      return dispatch({
+        type: 'PEOPLE',
+        payload: res
+      });
     });
-  }, [props]);
+  }, [dispatch]);
 
   return (
     <div>
-      <WorldMap items={initalItems}/>
+      <WorldMap items={state.people}/>
       <div className={classes.maino}>
         <FilterAndSort
-          items={initalItems}
           setNameFilter={setNameFilter}
           setSort={setSort}
           sort={sort}
@@ -52,8 +55,6 @@ const App = props => {
         <ul className={classes.personContainer}>
           <div>
             {PersonRender(
-              initalItems,
-              setInitialItems,
               nameFilter,
               timeFilter,
               timeZoneFilter,

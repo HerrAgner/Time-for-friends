@@ -3,20 +3,14 @@ import React from 'react'
 export const Store = React.createContext();
 
 const initialState = {
-    episodes: [],
-    favourites: []
+    people: []
 };
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case 'FETCH_DATA':
-            return { ...state,
-                episodes: action.payload };
-        case 'ADD_FAV':
-            return {
-                ...state,
-                favourites: [...state.favourites, action.payload]
-            };
+        case 'PEOPLE':
+            return { ...initialState,
+                people: action.payload};
         default:
             return state;
     }
