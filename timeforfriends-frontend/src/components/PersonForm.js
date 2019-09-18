@@ -1,21 +1,31 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import mongoAPI from "../api/mongoAPI";
 import axios from "axios";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Input from "@material-ui/core/Input";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import {Store} from "../Store";
 
 const PersonForm = () => {
+  const { dispatch } = useContext(Store);
   const [newItem, setNewItem] = useState({});
   useEffect(() => {
-     Object.keys(newItem).forEach((name) => {
+    Object.keys(newItem).forEach(name => {
       if (Object.keys(newItem[name]).indexOf("timeZone") > -1) {
-            mongoAPI.create(newItem, "person").then(res => {
-            console.log(res);
-          })
+        mongoAPI.create(newItem, "person").then(res => {
+          mongoAPI.getAll("person").then(res => {
+            return dispatch({
+              type: "PEOPLE",
+              payload: res
+            });
+          });
+        });
       }
     });
-  }, [newItem])
+  }, [newItem]);
 
   const handleNewItemChange = (event, itemType) => {
     switch (itemType) {
@@ -53,70 +63,89 @@ const PersonForm = () => {
       newItem.location.country
     }+${newItem.location.city}&gen=9&locationattributes=tz`;
     axios.get(url).then(response => {
-      let tz = response.data.Response.View[0].Result[0].Location.AdminInfo.TimeZone.id
+      console.log(response);
+      let tz =
+        response.data.Response.View[0].Result[0].Location.AdminInfo.TimeZone.id;
       setNewItem({
         ...newItem,
         location: {
           ...newItem.location,
           timeZone: tz
         }
-      })
-    })
+      });
+    });
   };
 
   return (
     <div>
       <Grid container direction="row" justify="center" alignItems="center">
         <Grid container direction="column" alignItems="stretch" item xs={5}>
-          <TextField
-            id="firstName-newItem"
-            label="First name"
-            name="firstName"
-            onChange={e => handleNewItemChange(e, "name")}
-            style={{ margin: 8 }}
-          />
-          <TextField
-            id="lastName-newItem"
-            label="Last name"
-            name="lastName"
-            onChange={e => handleNewItemChange(e, "name")}
-            style={{ margin: 8 }}
-          />
-          <TextField
-            id="phoneNumber-newItem"
-            label="Phone Number"
-            name="phoneNumber"
-            onChange={handleNewItemChange}
-            style={{ margin: 8 }}
-          />
-          <TextField
-            id="email-newItem"
-            label="E-mail"
-            name="email"
-            onChange={handleNewItemChange}
-            style={{ margin: 8 }}
-          />
-          <TextField
-            id="country-newItem"
-            label="Country"
-            name="country"
-            onChange={e => handleNewItemChange(e, "location")}
-            style={{ margin: 8 }}
-          />
-          <TextField
-            id="city-newItem"
-            label="City"
-            name="city"
-            onChange={e => handleNewItemChange(e, "location")}
-            style={{ margin: 8 }}
-          />
-          {/*<TextField*/}
-          {/*  id="timeZone-newItem"*/}
-          {/*  label="Timezone"*/}
-          {/*  name="timeZone"*/}
-          {/*  onChange={e => handleNewItemChange(e, "location")}*/}
-          {/*  style={{ margin: 8 }}*/}
-          {/*/>*/}
+          <FormControl>
+            <InputLabel htmlFor="firstName-input">First name</InputLabel>
+            <Input
+              id="firstName-input"
+              name="firstName"
+              onChange={e => handleNewItemChange(e, "name")}
+            />
+            <FormHelperText id="firstName-error">
+              First name must not be empty.
+            </FormHelperText>
+          </FormControl>
+          <FormControl>
+            <InputLabel htmlFor="lastName-input">Last name</InputLabel>
+            <Input
+              id="lastName-input"
+              name="lastName"
+              onChange={e => handleNewItemChange(e, "name")}
+            />
+            <FormHelperText id="lastName-error">
+              Last name must not be empty.
+            </FormHelperText>
+          </FormControl>
+          <FormControl>
+            <InputLabel htmlFor="phoneNumber-input">Phone number</InputLabel>
+            <Input
+              id="phoneNumber-input"
+              name="phoneNumber"
+              onChange={handleNewItemChange}
+            />
+            <FormHelperText id="phoneNumber-error">
+              Phone number must not be empy
+            </FormHelperText>
+          </FormControl>
+          <FormControl>
+            <InputLabel htmlFor="email-input">Email address</InputLabel>
+            <Input
+              id="email-input"
+              name="email"
+              onChange={handleNewItemChange}
+            />
+            <FormHelperText id="email-error">
+              Email must not be empty
+            </FormHelperText>
+          </FormControl>
+          <FormControl>
+            <InputLabel htmlFor="country-input">Country</InputLabel>
+            <Input
+              id="country-input"
+              name="country"
+              onChange={e => handleNewItemChange(e, "location")}
+            />
+            <FormHelperText id="country-error">
+              Country must not be empty.
+            </FormHelperText>
+          </FormControl>
+          <FormControl>
+            <InputLabel htmlFor="city-input">City</InputLabel>
+            <Input
+              id="city-input"
+              name="city"
+              onChange={e => handleNewItemChange(e, "location")}
+            />
+            <FormHelperText id="city-error">
+              City must not be empty.
+            </FormHelperText>
+          </FormControl>
         </Grid>
         <Grid
           container
@@ -127,7 +156,6 @@ const PersonForm = () => {
           <Button variant="contained" onClick={() => postToDb()}>
             Post
           </Button>
-          {/*<Button variant="contained">Update</Button>*/}
         </Grid>
       </Grid>
     </div>
