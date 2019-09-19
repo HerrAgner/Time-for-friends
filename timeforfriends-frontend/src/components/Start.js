@@ -4,7 +4,8 @@ import { Container } from "@material-ui/core";
 import {Store} from "../Store";
 
 const Start = () => {
-    const { state, dispatch } = useContext(Store);
+    const { state } = useContext(Store);
+    console.log(state);
 
     return (
     <Container style={{margin: 0, padding: 0}}>

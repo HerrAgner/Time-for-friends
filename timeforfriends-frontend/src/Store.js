@@ -9,7 +9,7 @@ const initialState = {
 const reducer = (state, action) => {
     switch (action.type) {
         case 'PEOPLE':
-            return { ...initialState,
+            return { ...state,
                 people: action.payload};
         default:
             return state;

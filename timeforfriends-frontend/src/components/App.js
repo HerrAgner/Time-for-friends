@@ -1,11 +1,8 @@
-import React, { useState, useEffect, useContext} from "react";
+import React, { useState} from "react";
 import "../style/App.css";
-import mongoService from "../api/mongoAPI";
 import PersonRender from "../components/Person";
 import FilterAndSort from "./Filters/FilterAndSort";
 import { makeStyles } from "@material-ui/core";
-import WorldMap from "./WorldMap";
-import  {Store} from "../Store";
 
 const useStyles = makeStyles(theme => ({
   maino: {
@@ -22,14 +19,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const App = props => {
-  // const [items, dispatch] = useReducer(reducer, []);
-  const { state, dispatch } = useContext(Store);
   const [nameFilter, setNameFilter] = useState({ name: "" });
   const [timeZoneFilter, setTimeZoneFilter] = useState("");
   const [timeFilter, setTimeFilter] = useState({ min: 0, max: 24 });
   const [sort, setSort] = useState("NAME");
   const classes = useStyles();
-
 
   return (
     <div>
@@ -57,33 +51,5 @@ const App = props => {
     </div>
   );
 };
-
-// const reducer = (items, action) => {
-//   switch (action.type) {
-//     case "SET":
-//       return action.payload
-//     case "NAMEFILTER":
-//       return [
-//         ...action.initState.filter(p =>
-//             p.name.firstName
-//                 .toUpperCase()
-//                 .includes(action.payload.toUpperCase())
-//         )
-//       ];
-//     case "TIMEZONE":
-//       return [
-//         ...action.initState.filter(p =>
-//             p.location.timeZone
-//                 .toUpperCase()
-//                 .includes(action.payload.toUpperCase())
-//         )
-//       ];
-//     case "MIN":
-//     case "MAX":
-//     case "NAMESORT":
-//     case "TIMEZONESORT":
-//     default:
-//   }
-// };
 
 export default App;
