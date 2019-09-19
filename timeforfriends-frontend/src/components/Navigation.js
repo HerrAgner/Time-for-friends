@@ -7,9 +7,7 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
-  Switch,
-  withRouter
-} from "react-router-dom";
+  Switch} from "react-router-dom";
 import App from "./App";
 import PersonForm from "../components/PersonForm";
 import Start from "../components/Start";
@@ -52,10 +50,9 @@ const Navigation = () => {
         break;
       default:
     }
-  });
+  },[history.location.pathname]);
 
   const handleChange = (event, newValue) => {
-    console.log(newValue);
     setValue(newValue);
   };
 

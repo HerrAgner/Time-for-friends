@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import {Store} from "../Store";
+import Map from "./Map";
 
 
 const PersonRender = (
@@ -129,12 +130,12 @@ const PersonItem = ({ person, deleteItem }) => {
           <p>Country: {person.location.country}</p>
           <p>City: {person.location.city}</p>
           <p>Timezone: {person.location.timeZone}</p>
-          {/*<Map*/}
-          {/*  zoom="12"*/}
-          {/*  city={person.location.city}*/}
-          {/*  country={person.location.country}*/}
-          {/*  _id={person._id}*/}
-          {/*/>*/}
+          <Map
+            zoom="12"
+            city={person.location.city}
+            country={person.location.country}
+            _id={person._id}
+          />
           <IconButton aria-label="delete" onClick={deleteItem}>
             <DeleteIcon />
           </IconButton>

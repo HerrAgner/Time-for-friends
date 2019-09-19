@@ -10,6 +10,7 @@ const WorldMap = props => {
     if (items.length) {
       let container = reRenderMap();
       let defaultLayers = platform.createDefaultLayers();
+
       const map = new window.H.Map(container, defaultLayers.vector.normal.map, {
         zoom: window.innerWidth > 600 ? 3 : 1,
         center: { lat: 25, lng: 5 }
@@ -160,7 +161,7 @@ const WorldMap = props => {
     container.setAttribute("id", "worldmap");
     container.setAttribute(
       "style",
-      "width: 100vw; height: 95vh; background: grey"
+      "width: 100vw; height: 95.5vh; background: grey"
     );
     parent.append(container);
     return container;

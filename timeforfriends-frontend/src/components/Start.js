@@ -5,7 +5,6 @@ import {Store} from "../Store";
 
 const Start = () => {
     const { state } = useContext(Store);
-    console.log(state);
 
     return (
     <Container style={{margin: 0, padding: 0}}>
