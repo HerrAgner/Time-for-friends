@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import mongoAPI from "../api/mongoAPI";
-import axios from "axios";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
@@ -21,80 +20,118 @@ const PersonForm = () => {
   const { dispatch } = useContext(Store);
   const [errors, setErrors] = useState([]);
   const [newItem, setNewItem] = useState(initialItem);
+  const [submitCheck, setSubmitCheck] = useState(false);
 
   useEffect(() => {
-    Object.keys(newItem).forEach(name => {
-      if (Object.keys(newItem[name]).includes("timeZone")) {
-        mongoAPI.create(newItem, "person").then(res => {
-          mongoAPI.getAll("person").then(res => {
-            return dispatch({
-              type: "PEOPLE",
-              payload: res
-            });
+    if (Object.keys(newItem).includes("timeZone")) {
+      mongoAPI.create(newItem, "person").then(res => {
+        mongoAPI.getAll("person").then(res => {
+          return dispatch({
+            type: "PEOPLE",
+            payload: res
           });
         });
-        setNewItem({initialItem});
-      }
-    });
-  }, [newItem, dispatch]);
-  console.log(Object.keys(newItem).forEach(name => name));
+      });
+      setNewItem({ initialItem });
+    }
+  }, [newItem, dispatch, initialItem]);
+
+  useEffect(() => {
+    if (errors.length === 0 && Object.values(newItem).every(v => v !== "")) {
+      setSubmitCheck(true);
+    } else {
+      setSubmitCheck(false);
+    }
+  }, [errors, newItem]);
 
   const blurValidation = props => {
-    if (props.target.value.length < 1) {
-      setErrors([...errors, props.target.name]);
+    if (
+      props.target.value.length < 1 &&
+      !errors.some(e => e.name === props.target.name)
+    ) {
+      setErrors([
+        ...errors,
+        {
+          name: props.target.name,
+          text: `Field must not be empty`,
+          type: "empty"
+        }
+      ]);
     }
   };
 
   const validateFields = () => {
-    loopNestedObj(newItem);
-  };
-
-  const loopNestedObj = obj => {
-    let tempArray = [];
-    Object.entries(obj).forEach(([key, val]) => {
-      if (val && typeof val === "object") loopNestedObj(val);
-      else {
-        if (val === null || val === "") {
-        }
+    Object.entries(newItem).forEach(([key, val]) => {
+      if (val === "" && !errors.some(e => e.name === key)) {
+        setErrors(oldArray => [
+          ...oldArray,
+          { name: key, text: `Field must not be empty`, type: "empty" }
+        ]);
       }
     });
   };
 
-  const handleNewItemChange = (event, itemType) => {
-    if (errors.includes(event.target.name)) {
-      setErrors(errors.filter(error => event.target.name !== error));
+  const handleNewItemChange = event => {
+    if (errors.some(e => e.name === event.target.name)) {
+      setErrors(errors.filter(error => event.target.name !== error.name));
     }
-    switch (itemType) {
-      case "name":
-        setNewItem({
-          ...newItem,
-          name: {
-            ...newItem.name,
-            [event.target.name]: event.target.value
-          }
-        });
-        break;
-      case "location":
-        setNewItem({
-          ...newItem,
-          location: {
-            ...newItem.location,
-            [event.target.name]: event.target.value
-          }
-        });
-        break;
-      default:
-        setNewItem({
-          ...newItem,
-          [event.target.name]: event.target.value
-        });
-        break;
+    setNewItem({
+      ...newItem,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  const handlePhoneNumber = event => {
+    const re = /[(]?[+]?(\d{2}|\d{3})[)]?[\s]?((\d{6}|\d{8})|(\d{3}[*.\-\s]){3}|(\d{2}[*.\-\s]){4}|(\d{4}[*.\-\s]){2})|\d{8}|\d{10}|\d{12}/;
+
+    if (event.target.value === "") {
+      setErrors([
+        ...errors,
+        {
+          name: event.target.name,
+          text: "Phone number must not be empty",
+          type: "empty"
+        }
+      ]);
+    } else if (!re.test(event.target.value)) {
+      setErrors([
+        ...errors,
+        {
+          name: event.target.name,
+          text: "Invalid phone number",
+          type: "error"
+        }
+      ]);
+    }
+  };
+
+  const handleEmail = event => {
+    const re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+    if (event.target.value === "") {
+      setErrors([
+        ...errors,
+        {
+          name: event.target.name,
+          text: "Email must not be empty",
+          type: "empty"
+        }
+      ]);
+    } else if (!re.test(event.target.value)) {
+      setErrors([
+        ...errors,
+        {
+          name: event.target.name,
+          text: "Invalid email",
+          type: "error"
+        }
+      ]);
     }
   };
 
   const postToDb = () => {
     validateFields();
-    if (errors.length === 0) {
+    if (submitCheck) {
+      console.log("hahaha");
       // let url = `https://geocoder.api.here.com/6.2/geocode.json?app_id=${
       //   process.env.REACT_APP_API_ID
       // }&app_code=${process.env.REACT_APP_API_CODE}&searchtext=${
@@ -126,11 +163,11 @@ const PersonForm = () => {
               id="firstName-input"
               name="firstName"
               value={newItem.firstName}
-              onChange={e => handleNewItemChange(e, "name")}
+              onChange={handleNewItemChange}
               onBlur={blurValidation}
-              error={errors.includes("firstName")}
+              error={errors.some(e => e.name === "firstName")}
             />
-            {errors.includes("firstName") && (
+            {errors.some(e => e.name === "firstName") && (
               <FormHelperText id="firstName-error" error={true}>
                 First name must not be empty.
               </FormHelperText>
@@ -142,11 +179,11 @@ const PersonForm = () => {
               id="lastName-input"
               name="lastName"
               value={newItem.lastName}
-              onChange={e => handleNewItemChange(e, "name")}
+              onChange={handleNewItemChange}
               onBlur={blurValidation}
-              error={errors.includes("lastName")}
+              error={errors.some(e => e.name === "lastName")}
             />
-            {errors.includes("lastName") && (
+            {errors.some(e => e.name === "lastName") && (
               <FormHelperText id="lastName-error" error={true}>
                 Last name must not be empty.
               </FormHelperText>
@@ -159,12 +196,12 @@ const PersonForm = () => {
               name="phoneNumber"
               value={newItem.phoneNumber}
               onChange={handleNewItemChange}
-              onBlur={blurValidation}
-              error={errors.includes("phoneNumber")}
+              onBlur={handlePhoneNumber}
+              error={errors.some(e => e.name === "phoneNumber")}
             />
-            {errors.includes("phoneNumber") && (
+            {errors.some(e => e.name === "phoneNumber") && (
               <FormHelperText id="phoneNumber-error" error={true}>
-                Phone number must not be empty.
+                {errors.filter(e => e.name === "phoneNumber")[0].text}
               </FormHelperText>
             )}
           </FormControl>
@@ -175,12 +212,12 @@ const PersonForm = () => {
               name="email"
               value={newItem.email}
               onChange={handleNewItemChange}
-              onBlur={blurValidation}
-              error={errors.includes("email")}
+              onBlur={handleEmail}
+              error={errors.some(e => e.name === "email")}
             />
-            {errors.includes("email") && (
+            {errors.some(e => e.name === "email") && (
               <FormHelperText id="email-error" error={true}>
-                Email must not be empty
+                {errors.filter(e => e.name === "email")[0].text}
               </FormHelperText>
             )}
           </FormControl>
@@ -190,11 +227,11 @@ const PersonForm = () => {
               id="country-input"
               name="country"
               value={newItem.country}
-              onChange={e => handleNewItemChange(e, "location")}
+              onChange={handleNewItemChange}
               onBlur={blurValidation}
-              error={errors.includes("country")}
+              error={errors.some(e => e.name === "country")}
             />
-            {errors.includes("country") && (
+            {errors.some(e => e.name === "country") && (
               <FormHelperText id="country-error" error={true}>
                 Country must not be empty.
               </FormHelperText>
@@ -206,11 +243,11 @@ const PersonForm = () => {
               id="city-input"
               name="city"
               value={newItem.city}
-              onChange={e => handleNewItemChange(e, "location")}
+              onChange={handleNewItemChange}
               onBlur={blurValidation}
-              error={errors.includes("city")}
+              error={errors.some(e => e.name === "city")}
             />
-            {errors.includes("city") && (
+            {errors.some(e => e.name === "city") && (
               <FormHelperText id="city-error" error={true}>
                 City must not be empty.
               </FormHelperText>
