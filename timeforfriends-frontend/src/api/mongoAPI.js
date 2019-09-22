@@ -37,7 +37,6 @@ const querySearch = (name, collection) => {
 }
 
 const create = (newObject, collection) => {
-    console.log("create");
     let url = baseUrl + collection
     const request = axios.post(url, newObject)
     return request.then(response => response.data)

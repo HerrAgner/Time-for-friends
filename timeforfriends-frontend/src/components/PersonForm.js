@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import mongoAPI from "../api/mongoAPI";
+import axios from "axios";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
@@ -24,7 +25,20 @@ const PersonForm = () => {
 
   useEffect(() => {
     if (Object.keys(newItem).includes("timeZone")) {
-      mongoAPI.create(newItem, "person").then(res => {
+      let sendItem = {
+        name: {
+          firstName: newItem.firstName,
+          lastName: newItem.lastName
+        },
+        phoneNumber: newItem.phoneNumber,
+        email: newItem.email,
+        location: {
+          country: newItem.country,
+          city: newItem.city,
+          timeZone: newItem.timeZone
+        }
+      };
+      mongoAPI.create(sendItem, "person").then(res => {
         mongoAPI.getAll("person").then(res => {
           return dispatch({
             type: "PEOPLE",
@@ -32,7 +46,7 @@ const PersonForm = () => {
           });
         });
       });
-      setNewItem({ initialItem });
+      setNewItem(initialItem);
     }
   }, [newItem, dispatch, initialItem]);
 
@@ -131,25 +145,20 @@ const PersonForm = () => {
   const postToDb = () => {
     validateFields();
     if (submitCheck) {
-      console.log("hahaha");
-      // let url = `https://geocoder.api.here.com/6.2/geocode.json?app_id=${
-      //   process.env.REACT_APP_API_ID
-      // }&app_code=${process.env.REACT_APP_API_CODE}&searchtext=${
-      //   newItem.location.country
-      // }+${newItem.location.city}&gen=9&locationattributes=tz`;
-      // axios.get(url).then(response => {
-      //   console.log(response);
-      //   let tz =
-      //     response.data.Response.View[0].Result[0].Location.AdminInfo.TimeZone
-      //       .id;
-      //   setNewItem({
-      //     ...newItem,
-      //     location: {
-      //       ...newItem.location,
-      //       timeZone: tz
-      //     }
-      //   });
-      // });
+      let url = `https://geocoder.api.here.com/6.2/geocode.json?app_id=${
+        process.env.REACT_APP_API_ID
+      }&app_code=${process.env.REACT_APP_API_CODE}&searchtext=${
+        newItem.country
+      }+${newItem.city}&gen=9&locationattributes=tz`;
+      axios.get(url).then(response => {
+        let tz =
+          response.data.Response.View[0].Result[0].Location.AdminInfo.TimeZone
+            .id;
+        setNewItem({
+          ...newItem,
+          timeZone: tz
+        });
+      });
     }
   };
 
