@@ -16,6 +16,16 @@ const WorldMap = props => {
         center: { lat: 25, lng: 5 }
       });
 
+      let tiles = platform.getMapTileService({'type': 'base'});
+      let layer = tiles.createTileLayer(
+          'maptile',
+          'reduced.day',
+          256,
+          'png',
+          {'style': 'wings'}
+      );
+      map.setBaseLayer(layer);
+
       let dataPoints = [];
       items.forEach(p => {
         let geocodingParams = {
