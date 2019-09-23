@@ -4,7 +4,7 @@ export const Store = React.createContext();
 
 const initialState = {
     people: [],
-    language: {name: "English", code: "sv"}
+    language: {name: "English", code: "en"}
 };
 
 const reducer = (state, action) => {

@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { purple, green, grey } from "@material-ui/core/colors";
+import { green, grey } from "@material-ui/core/colors";
 import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import Grid from "@material-ui/core/Grid";
 import { Store } from "../Store";
@@ -28,7 +27,6 @@ export default function LanguageSwitch() {
   });
 
   const handleChange = name => event => {
-      console.log(event.target.checked);
     setChecked({ ...checked, [name]: event.target.checked });
       dispatch({
           type: "LANGUAGE",
