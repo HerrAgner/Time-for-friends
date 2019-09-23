@@ -5,12 +5,11 @@ import FilterAndSort from "./Filters/FilterAndSort";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
-  maino: {
+  main: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    // width: "80vw"
   },
   personContainer: {
     minWidth: "80%",
@@ -27,7 +26,7 @@ const App = props => {
 
   return (
     <div>
-      <div className={classes.maino}>
+      <div className={classes.main}>
         <FilterAndSort
           setNameFilter={setNameFilter}
           setSort={setSort}

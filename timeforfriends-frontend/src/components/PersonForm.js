@@ -9,8 +9,10 @@ import Input from "@material-ui/core/Input";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Notification from "./Notification";
 import { Store } from "../Store";
+import Text from "./Text";
 
 const PersonForm = () => {
+  const T = Text();
   const initialItem = {
     firstName: "",
     lastName: "",
@@ -55,9 +57,9 @@ const PersonForm = () => {
         })
         .then(() => {
           setNotification({
-            message: `${newItem.firstName} ${
-              newItem.lastName
-            } was added to your friend list`,
+            message: `${newItem.firstName} ${newItem.lastName} ${
+              T.personForm.notificationAdded
+            }`,
             type: "notification"
           });
           setTimeout(() => {
@@ -66,7 +68,7 @@ const PersonForm = () => {
         });
       setNewItem(initialItem);
     }
-  }, [newItem, notification, initialItem, dispatch]);
+  }, [newItem, notification, initialItem, dispatch, T]);
 
   useEffect(() => {
     if (errors.length === 0 && Object.values(newItem).every(v => v !== "")) {
@@ -104,7 +106,7 @@ const PersonForm = () => {
             ...oldArray,
             {
               name: key,
-              text: `${key} must not be empty`,
+              text: `${key} ${T.personForm.errorEmpty}`,
               type: "empty"
             }
           ]);
@@ -131,7 +133,7 @@ const PersonForm = () => {
         ...oldArray,
         {
           name: "phoneNumber",
-          text: "Phone number must not be empty",
+          text: `${T.personForm.formPhoneNumber} ${T.personForm.errorEmpty}`,
           type: "empty"
         }
       ]);
@@ -140,7 +142,7 @@ const PersonForm = () => {
         ...errors,
         {
           name: event.target.name,
-          text: "Invalid phone number",
+          text: T.personForm.errorPhoneInvalid,
           type: "error"
         }
       ]);
@@ -151,10 +153,10 @@ const PersonForm = () => {
     const re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
     if (event === "" || event.target.value === "") {
       setErrors(oldArray => [
-        ...oldArray ,
+        ...oldArray,
         {
           name: "email",
-          text: "Email must not be empty",
+          text: `${T.personForm.formEmail} ${T.personForm.errorEmpty}`,
           type: "empty"
         }
       ]);
@@ -163,7 +165,7 @@ const PersonForm = () => {
         ...errors,
         {
           name: event.target.name,
-          text: "Invalid email",
+          text: T.personForm.errorEmailInvalid,
           type: "error"
         }
       ]);
@@ -195,7 +197,9 @@ const PersonForm = () => {
       <Grid container direction="row" justify="center" alignItems="center">
         <Grid container direction="column" alignItems="stretch" item xs={5}>
           <FormControl>
-            <InputLabel htmlFor="firstName-input">First name</InputLabel>
+            <InputLabel htmlFor="firstName-input">
+              {T.personForm.formFirstName}
+            </InputLabel>
             <Input
               id="firstName-input"
               name="firstName"
@@ -206,12 +210,14 @@ const PersonForm = () => {
             />
             {errors.some(e => e.name === "firstName") && (
               <FormHelperText id="firstName-error" error={true}>
-                First name must not be empty.
+                {T.personForm.formFirstName} {T.personForm.errorEmpty}
               </FormHelperText>
             )}
           </FormControl>
           <FormControl>
-            <InputLabel htmlFor="lastName-input">Last name</InputLabel>
+            <InputLabel htmlFor="lastName-input">
+              {T.personForm.formLastName}
+            </InputLabel>
             <Input
               id="lastName-input"
               name="lastName"
@@ -222,12 +228,14 @@ const PersonForm = () => {
             />
             {errors.some(e => e.name === "lastName") && (
               <FormHelperText id="lastName-error" error={true}>
-                Last name must not be empty.
+                {T.personForm.formLastName} {T.personForm.errorEmpty}
               </FormHelperText>
             )}
           </FormControl>
           <FormControl>
-            <InputLabel htmlFor="phoneNumber-input">Phone number</InputLabel>
+            <InputLabel htmlFor="phoneNumber-input">
+              {T.personForm.formPhoneNumber}
+            </InputLabel>
             <Input
               id="phoneNumber-input"
               name="phoneNumber"
@@ -238,12 +246,19 @@ const PersonForm = () => {
             />
             {errors.some(e => e.name === "phoneNumber") && (
               <FormHelperText id="phoneNumber-error" error={true}>
-                {errors.filter(e => e.name === "phoneNumber")[0].text}
+                {errors.filter(e => e.name === "phoneNumber")[0].type ===
+                "error"
+                  ? `${T.personForm.errorPhoneInvalid}`
+                  : `${T.personForm.formPhoneNumber} ${
+                      T.personForm.errorEmpty
+                    }`}
               </FormHelperText>
             )}
           </FormControl>
           <FormControl>
-            <InputLabel htmlFor="email-input">Email address</InputLabel>
+            <InputLabel htmlFor="email-input">
+              {T.personForm.formEmail}
+            </InputLabel>
             <Input
               id="email-input"
               name="email"
@@ -254,12 +269,16 @@ const PersonForm = () => {
             />
             {errors.some(e => e.name === "email") && (
               <FormHelperText id="email-error" error={true}>
-                {errors.filter(e => e.name === "email")[0].text}
+                {errors.filter(e => e.name === "email")[0].type === "error"
+                  ? `${T.personForm.errorEmailInvalid}`
+                  : `${T.personForm.formEmail} ${T.personForm.errorEmpty}`}
               </FormHelperText>
             )}
           </FormControl>
           <FormControl>
-            <InputLabel htmlFor="country-input">Country</InputLabel>
+            <InputLabel htmlFor="country-input">
+              {T.personForm.formCountry}
+            </InputLabel>
             <Input
               id="country-input"
               name="country"
@@ -270,12 +289,14 @@ const PersonForm = () => {
             />
             {errors.some(e => e.name === "country") && (
               <FormHelperText id="country-error" error={true}>
-                Country must not be empty.
+                {T.personForm.formCountry} {T.personForm.errorEmpty}
               </FormHelperText>
             )}
           </FormControl>
           <FormControl>
-            <InputLabel htmlFor="city-input">City</InputLabel>
+            <InputLabel htmlFor="city-input">
+              {T.personForm.formCity}
+            </InputLabel>
             <Input
               id="city-input"
               name="city"
@@ -286,7 +307,7 @@ const PersonForm = () => {
             />
             {errors.some(e => e.name === "city") && (
               <FormHelperText id="city-error" error={true}>
-                City must not be empty.
+                {T.personForm.formCity} {T.personForm.errorEmpty}
               </FormHelperText>
             )}
           </FormControl>
@@ -297,8 +318,8 @@ const PersonForm = () => {
           justify="space-evenly"
           alignItems="center"
         >
-          <Button variant="contained" onClick={() => postToDb()}>
-            Post
+          <Button variant="contained" style={{margin: "1vh"}} onClick={() => postToDb()}>
+            {T.personForm.button}
           </Button>
         </Grid>
         <Notification message={notification.message} type={notification.type} />

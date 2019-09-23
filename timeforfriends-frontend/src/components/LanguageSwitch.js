@@ -5,6 +5,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import Switch from "@material-ui/core/Switch";
 import Grid from "@material-ui/core/Grid";
 import { Store } from "../Store";
+import Text from "./Text"
 
 const GreenSwitch = withStyles({
   switchBase: {
@@ -20,11 +21,12 @@ const GreenSwitch = withStyles({
   track: { backgroundColor: grey[500] }
 })(Switch);
 
-export default function LanguageSwitch() {
+const LanguageSwitch = () => {
   const { state, dispatch } = useContext(Store);
   const [checked, setChecked] = React.useState({
     checked: true
   });
+  const T = Text();
 
   const handleChange = name => event => {
     setChecked({ ...checked, [name]: event.target.checked });
@@ -45,8 +47,9 @@ export default function LanguageSwitch() {
             value="checked"
           />
         </Grid>
-          <Grid item>Toggle language</Grid>
+          {/*<Grid item>{T.navigation.toggle}</Grid>*/}
       </Grid>
     </FormGroup>
   );
 }
+export default LanguageSwitch
