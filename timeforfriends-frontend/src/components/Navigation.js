@@ -14,6 +14,8 @@ import Start from "../components/Start";
 import { Store } from "../Store";
 import mongoService from "../api/mongoAPI";
 import { createBrowserHistory } from "history";
+import LanguageSwitch from "./LanguageSwitch";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,7 +28,21 @@ const Navigation = () => {
   const history = createBrowserHistory();
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const { dispatch } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
+
+  const strings = {
+    en:{
+      home: "Home",
+      friends: "Friends",
+      addFriend: "Add friend"
+    },
+    sv: {
+      home: "Hem",
+      friends: "Vänner",
+      addFriend: "Lägg till vän"
+    }
+  };
+  const translate = strings[state.language.code]
 
   useEffect(() => {
     mongoService.getAll("person").then(res => {
@@ -60,16 +76,23 @@ const Navigation = () => {
     <Router>
       <div className={classes.root}>
         <AppBar position="sticky" color="default" elevation={0}>
+          <Grid
+              container
+              direction="row"
+              justify="space-between"
+              alignItems="center">
           <Tabs
             value={value}
             onChange={handleChange}
             indicatorColor="primary"
             textColor="primary"
           >
-            <Tab value={0} label="Home" component={Link} to="/" />
-            <Tab value={1} label="Friends" component={Link} to="/friends" />
-            <Tab value={2} label="Add friend" component={Link} to="/post" />
+            <Tab value={0} label={translate.home} component={Link} to="/" />
+            <Tab value={1} label={translate.friends} component={Link} to="/friends" />
+            <Tab value={2} label={translate.addFriend} component={Link} to="/post" />
           </Tabs>
+            <LanguageSwitch/>
+          </Grid>
         </AppBar>
 
         <Switch>

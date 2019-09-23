@@ -3,7 +3,8 @@ import React from 'react'
 export const Store = React.createContext();
 
 const initialState = {
-    people: []
+    people: [],
+    language: {name: "English", code: "sv"}
 };
 
 const reducer = (state, action) => {
@@ -11,6 +12,9 @@ const reducer = (state, action) => {
         case 'PEOPLE':
             return { ...state,
                 people: action.payload};
+        case 'LANGUAGE':
+            return { ...state,
+                language: action.payload};
         default:
             return state;
     }
