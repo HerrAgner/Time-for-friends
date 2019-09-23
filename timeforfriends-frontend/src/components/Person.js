@@ -30,7 +30,7 @@ const PersonRender = (
       p.location.timeZone.toUpperCase().includes(timeZoneFilter.toUpperCase())
     )
     .filter(p =>
-      p.name.firstName.toUpperCase().includes(filter.name.toUpperCase())
+        p.name.firstName.toUpperCase().includes(filter.name.toUpperCase()) || p.name.lastName.toUpperCase().includes(filter.name.toUpperCase())
     )
     .filter(p => {
       if (

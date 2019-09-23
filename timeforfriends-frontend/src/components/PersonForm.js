@@ -64,7 +64,7 @@ const PersonForm = () => {
             setNotification({ name: null, type: null });
           }, 5000);
         });
-          setNewItem(initialItem);
+      setNewItem(initialItem);
     }
   }, [newItem, notification, initialItem, dispatch]);
 
@@ -95,10 +95,20 @@ const PersonForm = () => {
   const validateFields = () => {
     Object.entries(newItem).forEach(([key, val]) => {
       if (val === "" && !errors.some(e => e.name === key)) {
-        setErrors(oldArray => [
-          ...oldArray,
-          { name: key, text: `Field must not be empty`, type: "empty" }
-        ]);
+        if (key === "email") {
+          handleEmail(val);
+        } else if (key === "phoneNumber") {
+          handlePhoneNumber(val);
+        } else {
+          setErrors(oldArray => [
+            ...oldArray,
+            {
+              name: key,
+              text: `${key} must not be empty`,
+              type: "empty"
+            }
+          ]);
+        }
       }
     });
   };
@@ -116,11 +126,11 @@ const PersonForm = () => {
   const handlePhoneNumber = event => {
     const re = /[(]?[+]?(\d{2}|\d{3})[)]?[\s]?((\d{6}|\d{8})|(\d{3}[*.\-\s]){3}|(\d{2}[*.\-\s]){4}|(\d{4}[*.\-\s]){2})|\d{8}|\d{10}|\d{12}/;
 
-    if (event.target.value === "") {
-      setErrors([
-        ...errors,
+    if (event === "" || event.target.value === "") {
+      setErrors(oldArray => [
+        ...oldArray,
         {
-          name: event.target.name,
+          name: "phoneNumber",
           text: "Phone number must not be empty",
           type: "empty"
         }
@@ -139,11 +149,11 @@ const PersonForm = () => {
 
   const handleEmail = event => {
     const re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-    if (event.target.value === "") {
-      setErrors([
-        ...errors,
+    if (event === "" || event.target.value === "") {
+      setErrors(oldArray => [
+        ...oldArray ,
         {
-          name: event.target.name,
+          name: "email",
           text: "Email must not be empty",
           type: "empty"
         }
@@ -291,7 +301,7 @@ const PersonForm = () => {
             Post
           </Button>
         </Grid>
-          <Notification message={notification.message} type={notification.type} />
+        <Notification message={notification.message} type={notification.type} />
       </Grid>
     </div>
   );
