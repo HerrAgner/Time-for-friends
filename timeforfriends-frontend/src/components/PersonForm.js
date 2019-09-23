@@ -7,6 +7,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import Notification from "./Notification";
 import { Store } from "../Store";
 
 const PersonForm = () => {
@@ -22,6 +23,10 @@ const PersonForm = () => {
   const [errors, setErrors] = useState([]);
   const [newItem, setNewItem] = useState(initialItem);
   const [submitCheck, setSubmitCheck] = useState(false);
+  const [notification, setNotification] = useState({
+    message: null,
+    type: null
+  });
 
   useEffect(() => {
     if (Object.keys(newItem).includes("timeZone")) {
@@ -38,17 +43,30 @@ const PersonForm = () => {
           timeZone: newItem.timeZone
         }
       };
-      mongoAPI.create(sendItem, "person").then(res => {
-        mongoAPI.getAll("person").then(res => {
-          return dispatch({
-            type: "PEOPLE",
-            payload: res
+      mongoAPI
+        .create(sendItem, "person")
+        .then(res => {
+          mongoAPI.getAll("person").then(res => {
+            return dispatch({
+              type: "PEOPLE",
+              payload: res
+            });
           });
+        })
+        .then(() => {
+          setNotification({
+            message: `${newItem.firstName} ${
+              newItem.lastName
+            } was added to your friend list`,
+            type: "notification"
+          });
+          setTimeout(() => {
+            setNotification({ name: null, type: null });
+          }, 5000);
         });
-      });
-      setNewItem(initialItem);
+          setNewItem(initialItem);
     }
-  }, [newItem, dispatch, initialItem]);
+  }, [newItem, notification, initialItem, dispatch]);
 
   useEffect(() => {
     if (errors.length === 0 && Object.values(newItem).every(v => v !== "")) {
@@ -273,6 +291,7 @@ const PersonForm = () => {
             Post
           </Button>
         </Grid>
+          <Notification message={notification.message} type={notification.type} />
       </Grid>
     </div>
   );
