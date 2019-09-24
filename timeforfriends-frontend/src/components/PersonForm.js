@@ -318,7 +318,11 @@ const PersonForm = () => {
           justify="space-evenly"
           alignItems="center"
         >
-          <Button variant="contained" style={{margin: "1vh"}} onClick={() => postToDb()}>
+          <Button
+            variant="contained"
+            style={{ margin: "1vh" }}
+            onClick={() => postToDb()}
+          >
             {T.personForm.button}
           </Button>
         </Grid>
