@@ -14,14 +14,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const NameFilter = ({ setNameFilter}) => {
+const NameFilter = ({ setNameFilter, text}) => {
   const classes = useStyles();
   const handleFilter = event => setNameFilter({ name: event.target.value });
   return (
     <div className={classes.root}>
       <FormControl className={classes.formControl}>
         <TextField
-            placeholder="Name filter"
+            placeholder={text}
             onKeyUp={handleFilter} />
       </FormControl>
     </div>

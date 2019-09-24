@@ -5,7 +5,7 @@ import Select from "@material-ui/core/Select";
 import React from "react";
 import {makeStyles} from "@material-ui/core";
 
-const TimeZoneFilter = ({ items, setTimeZoneFilter, timeZoneFilter }) => {
+const TimeZoneFilter = ({ items, setTimeZoneFilter, timeZoneFilter, text }) => {
     const useStyles = makeStyles(theme => ({
         root: {
             display: "flex",
@@ -37,7 +37,7 @@ const TimeZoneFilter = ({ items, setTimeZoneFilter, timeZoneFilter }) => {
 
     return (
         <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="tz-filter">Timezone filter</InputLabel>
+            <InputLabel htmlFor="tz-filter">{text}</InputLabel>
             <Select
                 value={timeZoneFilter}
                 onChange={handleChange}

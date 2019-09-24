@@ -1,9 +1,10 @@
 import React from "react";
-import {makeStyles, RadioGroup} from "@material-ui/core";
+import { makeStyles, RadioGroup } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { green } from "@material-ui/core/colors";
 import Radio from "@material-ui/core/Radio";
+import Text from "../Text";
 
 const GreenRadio = withStyles({
   root: {
@@ -16,6 +17,7 @@ const GreenRadio = withStyles({
 })(props => <Radio color="default" {...props} />);
 
 const SortButtons = ({ setSort, sort }) => {
+  const T = Text();
   const classes = useStyles();
 
   const handleSort = event => {
@@ -29,12 +31,17 @@ const SortButtons = ({ setSort, sort }) => {
       onChange={handleSort}
       className={classes.buttonContainer}
     >
-      <p >Sort by:</p>
-      <FormControlLabel className={classes.button} value="NAME" control={<GreenRadio />} label="Name" />
+      <p>{T.sort.sortBy}</p>
+      <FormControlLabel
+        className={classes.button}
+        value="NAME"
+        control={<GreenRadio />}
+        label={T.sort.name}
+      />
       <FormControlLabel
         value="TIMEZONE"
         control={<GreenRadio />}
-        label="Timezone"
+        label={T.sort.timeZone}
         className={classes.button}
       />
     </RadioGroup>

@@ -7,6 +7,7 @@ import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Store} from "../../Store";
+import Text from "../Text"
 
 const FilterAndSort = ({
   setNameFilter,
@@ -19,11 +20,13 @@ const FilterAndSort = ({
 }) => {
   const { state } = useContext(Store);
   const classes = useStyles();
+  const T = Text();
   return (
     <Container maxWidth="md" className={classes.root} style={{padding: 0}}>
       <Card className={classes.card} style={{margin:"10px", padding:"10px"}}>
-        <NameFilter setNameFilter={setNameFilter} className={classes.textField}>Name filter: </NameFilter>
+        <NameFilter text={T.filter.name} setNameFilter={setNameFilter} className={classes.textField} />
         <TimeZoneFilter
+          text={T.filter.timeZone}
           setTimeZoneFilter={setTimeZoneFilter}
           timeZoneFilter={timeZoneFilter}
           items={state.people}

@@ -23,6 +23,15 @@ const Text = () => {
         formCountry: "Country",
         formCity: "City",
         button: "Submit"
+      },
+      filter: {
+        name: "Name filter",
+        timeZone: "Time zone filter"
+      },
+      sort: {
+        sortBy: "Sort by:",
+        name: "Name",
+        timeZone: "Time zone"
       }
     },
     sv: {
@@ -44,6 +53,15 @@ const Text = () => {
         formCountry: "Land",
         formCity: "Stad",
         button: "Skicka"
+      },
+      filter: {
+        name: "Filtrera på namn",
+        timeZone: "Filtrera på tidszon"
+      },
+      sort: {
+        sortBy: "Sortera efter:",
+        name: "Namn",
+        timeZone: "Tidszon"
       }
     }
   };

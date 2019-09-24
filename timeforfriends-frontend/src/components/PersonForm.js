@@ -140,7 +140,7 @@ const PersonForm = () => {
       const phoneArray = event.target.value.split(/\n/);
       phoneArray.forEach(nr => {
         console.log();
-        if (!re.test(nr) || nr.length > 12) {
+        if (!re.test(nr) || nr.length > 16) {
           setErrors([
             ...errors,
             {
