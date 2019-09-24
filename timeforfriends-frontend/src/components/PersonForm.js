@@ -87,7 +87,6 @@ const PersonForm = () => {
         ...errors,
         {
           name: props.target.name,
-          text: `Field must not be empty`,
           type: "empty"
         }
       ]);
@@ -106,7 +105,6 @@ const PersonForm = () => {
             ...oldArray,
             {
               name: key,
-              text: `${key} ${T.personForm.errorEmpty}`,
               type: "empty"
             }
           ]);

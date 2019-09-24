@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
 import Grid from "@material-ui/core/Grid";
@@ -44,7 +44,6 @@ const TimeSlider = withStyles({
 
 const TimeDisplay = ({ timeFilter }) => {
   const { state } = useContext(Store);
-  const [time, setTime] = useState(timeFilter);
   const lang = state.language.code;
   let hour = /([^.]+)/.exec(timeFilter)[0];
   let ampm;
@@ -56,7 +55,7 @@ const TimeDisplay = ({ timeFilter }) => {
     ampm = "pm";
   } else if (lang === "en") {
     ampm = "am";
-  } else if (lang === "sv") {
+  } else {
     ampm = null;
   }
   let min = timeFilter % 1 === 0 ? "00" : "30";

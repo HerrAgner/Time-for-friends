@@ -5,7 +5,6 @@ import FormGroup from "@material-ui/core/FormGroup";
 import Switch from "@material-ui/core/Switch";
 import Grid from "@material-ui/core/Grid";
 import { Store } from "../Store";
-import Text from "./Text"
 
 const GreenSwitch = withStyles({
   switchBase: {
@@ -26,7 +25,6 @@ const LanguageSwitch = () => {
   const [checked, setChecked] = React.useState({
     checked: true
   });
-  const T = Text();
 
   const handleChange = name => event => {
     setChecked({ ...checked, [name]: event.target.checked });
