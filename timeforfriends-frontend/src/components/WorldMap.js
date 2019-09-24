@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
+import { Store } from "../Store";
 
 const WorldMap = props => {
-  // let map
+  const { state } = useContext(Store);
   useEffect(() => {
     let platform = new window.H.service.Platform({
       apikey: process.env.REACT_APP_API_KEY
@@ -16,14 +17,10 @@ const WorldMap = props => {
         center: { lat: 25, lng: 5 }
       });
 
-      let tiles = platform.getMapTileService({'type': 'base'});
-      let layer = tiles.createTileLayer(
-          'maptile',
-          'reduced.day',
-          256,
-          'png',
-          {'style': 'wings'}
-      );
+      let tiles = platform.getMapTileService({ type: "base" });
+      let layer = tiles.createTileLayer("maptile", "reduced.day", 256, "png", {
+        style: "wings"
+      });
       map.setBaseLayer(layer);
 
       let dataPoints = [];
@@ -149,7 +146,10 @@ const WorldMap = props => {
       // eslint-disable-next-line
       const ui = window.H.ui.UI.createDefault(map, defaultLayers);
       // eslint-disable-next-line
-      const behavior = new window.H.mapevents.Behavior(new window.H.mapevents.MapEvents(map));
+      const behavior = new window.H.mapevents.Behavior(
+        new window.H.mapevents.MapEvents(map)
+      );
+      state.language.code === "en" ? ui.setUnitSystem(window.H.ui.UnitSystem.IMPERIAL) : ui.setUnitSystem(window.H.ui.UnitSystem.METRIC)
 
       // let addMarkerToGroup = (group, position, html) => {
       //   let marker = new window.H.map.Marker(position);
@@ -160,7 +160,7 @@ const WorldMap = props => {
         map.getViewPort().resize();
       });
     }
-  }, [props]);
+  }, [props, state.language.code]);
 
   const reRenderMap = () => {
     let parent = document.getElementById("parent");
@@ -177,10 +177,7 @@ const WorldMap = props => {
     return container;
   };
 
-  return (
-    <div id="parent">
-    </div>
-  );
+  return <div id="parent" />;
 };
 
 export default WorldMap;

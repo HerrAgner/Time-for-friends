@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
+import { Store } from "../Store";
 
-const Map = (props) => {
-    useEffect(() => {
+const Map = props => {
+  const { state } = useContext(Store);
+  useEffect(() => {
     let platform = new window.H.service.Platform({
       apikey: process.env.REACT_APP_API_KEY
-    })
-    let container = document.getElementById(props._id);
+    });
+    let container = reRenderMap(props);
     let defaultLayers = platform.createDefaultLayers();
 
     let onResult = result => {
@@ -29,24 +31,45 @@ const Map = (props) => {
       let behavior = new window.H.mapevents.Behavior(
         new window.H.mapevents.MapEvents(map)
       );
+      state.language.code === "en"
+        ? ui.setUnitSystem(window.H.ui.UnitSystem.IMPERIAL)
+        : ui.setUnitSystem(window.H.ui.UnitSystem.METRIC);
     };
 
     let geocoder = platform.getGeocodingService();
     let geocodingParams = {
-        country: props.country,
-        city: props.city
-    }
+      country: props.country,
+      city: props.city
+    };
 
     geocoder.geocode(geocodingParams, onResult, e => {
       alert(e);
     });
-    },[props])
-    return (
+  }, [props, state.language.code]);
+
+  const reRenderMap = props => {
+    let parent = document.getElementById("parentSingleMap");
+    if (document.getElementById(props._id)) {
+      parent.removeChild(document.getElementById(props._id));
+    }
+    let container = document.createElement("div");
+    container.setAttribute("id", props._id);
+    container.setAttribute(
+      "style",
+      "width: 100%; height: 400px; background: grey"
+    );
+    parent.append(container);
+    return container;
+  };
+
+  return (
+    <div id="parentSingleMap">
       <div
         id={props._id}
         style={{ width: "100%", height: "400px", background: "grey" }}
       />
-    );
-}
+    </div>
+  );
+};
 
-export default Map
+export default Map;
