@@ -114,9 +114,20 @@ const PersonItem = ({ person, deleteItem }) => {
           direction="row"
           justify="space-around"
           alignItems="center"
+          spacing={10}
         >
-          {person.name.firstName} {person.name.lastName}
-          <Clock timeZone={person.location.timeZone} />
+          <Grid
+            item
+            xs={3}
+          >
+            {person.name.firstName} {person.name.lastName}
+          </Grid>
+          <Grid
+            item
+            xs={3}
+          >
+            <Clock timeZone={person.location.timeZone} />
+          </Grid>
         </Grid>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
@@ -126,13 +137,16 @@ const PersonItem = ({ person, deleteItem }) => {
           direction="column"
           // justify="center"
           // alignItems="center"
-        ><Card>
-          <CardContent>Country: {person.location.country}</CardContent>
-          <CardContent>City: {person.location.city}</CardContent>
-          <CardContent>Timezone: {person.location.timeZone}</CardContent>
-          <CardContent>Email: {person.email.join(", ")}</CardContent>
-          <CardContent>Phone number: {person.phoneNumber.join(", ")}</CardContent>
-        </Card>
+        >
+          <Card>
+            <CardContent>Country: {person.location.country}</CardContent>
+            <CardContent>City: {person.location.city}</CardContent>
+            <CardContent>Timezone: {person.location.timeZone}</CardContent>
+            <CardContent>Email: {person.email.join(", ")}</CardContent>
+            <CardContent>
+              Phone number: {person.phoneNumber.join(", ")}
+            </CardContent>
+          </Card>
           <Map
             zoom="12"
             city={person.location.city}

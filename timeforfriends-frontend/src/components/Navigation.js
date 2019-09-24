@@ -66,7 +66,7 @@ const Navigation = () => {
           <Grid
               container
               direction="row"
-              justify="space-between"
+              justify="space-around"
               alignItems="center">
           <Tabs
             value={value}
