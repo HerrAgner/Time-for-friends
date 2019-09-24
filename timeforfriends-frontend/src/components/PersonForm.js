@@ -37,8 +37,8 @@ const PersonForm = () => {
           firstName: newItem.firstName,
           lastName: newItem.lastName
         },
-        phoneNumber: newItem.phoneNumber,
-        email: newItem.email,
+        phoneNumber: newItem.phoneNumber.split(/\n/),
+        email: newItem.email.split(/\n/),
         location: {
           country: newItem.country,
           city: newItem.city,
@@ -62,12 +62,13 @@ const PersonForm = () => {
             }`,
             type: "notification"
           });
-          setTimeout(() => {
-            setNotification({ name: null, type: null });
-          }, 5000);
         });
       setNewItem(initialItem);
     }
+    const timeout = setTimeout(() => {
+      setNotification({ name: null, type: null });
+    }, 5000);
+    return () => clearTimeout(timeout);
   }, [newItem, notification, initialItem, dispatch, T]);
 
   useEffect(() => {
@@ -124,8 +125,6 @@ const PersonForm = () => {
   };
 
   const handlePhoneNumber = event => {
-    const re = /[(]?[+]?(\d{2}|\d{3})[)]?[\s]?((\d{6}|\d{8})|(\d{3}[*.\-\s]){3}|(\d{2}[*.\-\s]){4}|(\d{4}[*.\-\s]){2})|\d{8}|\d{10}|\d{12}/;
-
     if (event === "" || event.target.value === "") {
       setErrors(oldArray => [
         ...oldArray,
@@ -135,20 +134,27 @@ const PersonForm = () => {
           type: "empty"
         }
       ]);
-    } else if (!re.test(event.target.value)) {
-      setErrors([
-        ...errors,
-        {
-          name: event.target.name,
-          text: T.personForm.errorPhoneInvalid,
-          type: "error"
+    }
+    if (event) {
+      const re = /[(]?[+]?(\d{2}|\d{3})[)]?[\s]?((\d{6}|\d{8})|(\d{3}[*.\-\s]){3}|(\d{2}[*.\-\s]){4}|(\d{4}[*.\-\s]){2})|\d{8}|\d{10}|\d{12}/;
+      const phoneArray = event.target.value.split(/\n/);
+      phoneArray.forEach(nr => {
+        console.log();
+        if (!re.test(nr) || nr.length > 12) {
+          setErrors([
+            ...errors,
+            {
+              name: event.target.name,
+              text: T.personForm.errorPhoneInvalid,
+              type: "error"
+            }
+          ]);
         }
-      ]);
+      });
     }
   };
 
   const handleEmail = event => {
-    const re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
     if (event === "" || event.target.value === "") {
       setErrors(oldArray => [
         ...oldArray,
@@ -158,15 +164,22 @@ const PersonForm = () => {
           type: "empty"
         }
       ]);
-    } else if (!re.test(event.target.value)) {
-      setErrors([
-        ...errors,
-        {
-          name: event.target.name,
-          text: T.personForm.errorEmailInvalid,
-          type: "error"
+    }
+    if (event) {
+      const re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      const emailArray = event.target.value.split(/\n/);
+      emailArray.forEach(email => {
+        if (!re.test(email)) {
+          setErrors([
+            ...errors,
+            {
+              name: event.target.name,
+              text: T.personForm.errorEmailInvalid,
+              type: "error"
+            }
+          ]);
         }
-      ]);
+      });
     }
   };
 
@@ -237,6 +250,8 @@ const PersonForm = () => {
             <Input
               id="phoneNumber-input"
               name="phoneNumber"
+              rowsMax={3}
+              multiline={true}
               value={newItem.phoneNumber}
               onChange={handleNewItemChange}
               onBlur={handlePhoneNumber}
@@ -260,6 +275,8 @@ const PersonForm = () => {
             <Input
               id="email-input"
               name="email"
+              multiline={true}
+              rowsMax={3}
               value={newItem.email}
               onChange={handleNewItemChange}
               onBlur={handleEmail}

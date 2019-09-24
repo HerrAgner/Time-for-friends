@@ -13,11 +13,11 @@ let personSchema = new Schema({
     }
   },
   phoneNumber: {
-    type: String,
+    type: [String],
     required: true
   },
   email: {
-    type: String,
+    type: [String],
     required: true
   },
   location: {

@@ -8,7 +8,7 @@ import moment from "moment-timezone";
 import {
   ExpansionPanelDetails,
   ExpansionPanelSummary,
-  ExpansionPanel
+  ExpansionPanel, Card, CardContent
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import {Store} from "../Store";
@@ -124,12 +124,15 @@ const PersonItem = ({ person, deleteItem }) => {
           container
           item
           direction="column"
-          justify="center"
-          alignItems="center"
-        >
-          <p>Country: {person.location.country}</p>
-          <p>City: {person.location.city}</p>
-          <p>Timezone: {person.location.timeZone}</p>
+          // justify="center"
+          // alignItems="center"
+        ><Card>
+          <CardContent>Country: {person.location.country}</CardContent>
+          <CardContent>City: {person.location.city}</CardContent>
+          <CardContent>Timezone: {person.location.timeZone}</CardContent>
+          <CardContent>Email: {person.email.join(", ")}</CardContent>
+          <CardContent>Phone number: {person.phoneNumber.join(", ")}</CardContent>
+        </Card>
           <Map
             zoom="12"
             city={person.location.city}
