@@ -114,7 +114,7 @@ const WorldMap = props => {
                   bubble = new window.H.ui.InfoBubble(
                     evt.target.getGeometry(),
                     {
-                      content: "Friends living here: " + bubbleText.map(c => c.info).join(",")
+                      content: bubbleText.map(c => c.info).join(",")
                     }
                   );
                 } else {
@@ -163,16 +163,27 @@ const WorldMap = props => {
       });
 
         // Lurig grej
-        map.addEventListener('tap', function (evt) {
-          let coord = map.screenToGeo(evt.currentPointer.viewportX,
-            evt.currentPointer.viewportY);
+        map.addEventListener('contextmenu', function (evt) {
+          if (evt.target !== map) {
+            return;
+          }
+          let coord = map.screenToGeo(evt.viewportX,
+            evt.viewportY);
           let lat = Math.abs(coord.lat.toFixed(3))
           let lng = Math.abs(coord.lng.toFixed(3))
           if (lat >= 49.109 && lat <= 49.119 && lng >= 8.502 && lng <= 8.514) {
-            dispatch({
-              type: "LANGUAGE",
-              payload: { name: "Klingon", code: "kl" }
-            });
+            evt.items.push(
+              new window.H.util.ContextItem({
+                label: 'Boldy go where no man has gone before?',
+                callback: function() {
+                  dispatch({
+                    type: "LANGUAGE",
+                    payload: { name: "Klingon", code: "kl" }
+                  })
+                }
+              })
+
+          )
           }
         });
 
