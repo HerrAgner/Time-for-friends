@@ -3,7 +3,6 @@ import { Store } from "../Store";
 import "../style/map.css";
 
 const WorldMap = props => {
-
   const { state, dispatch } = useContext(Store);
   useEffect(() => {
     let platform = new window.H.service.Platform({
@@ -162,31 +161,28 @@ const WorldMap = props => {
         map.getViewPort().resize();
       });
 
-        // Lurig grej
-        map.addEventListener('contextmenu', function (evt) {
-          if (evt.target !== map) {
-            return;
-          }
-          let coord = map.screenToGeo(evt.viewportX,
-            evt.viewportY);
-          let lat = Math.abs(coord.lat.toFixed(3))
-          let lng = Math.abs(coord.lng.toFixed(3))
-          if (lat >= 49.109 && lat <= 49.119 && lng >= 8.502 && lng <= 8.514) {
-            evt.items.push(
-              new window.H.util.ContextItem({
-                label: 'Boldy go where no man has gone before?',
-                callback: function() {
-                  dispatch({
-                    type: "LANGUAGE",
-                    payload: { name: "Klingon", code: "kl" }
-                  })
-                }
-              })
-
-          )
-          }
-        });
-
+      // Lurig grej
+      map.addEventListener("contextmenu", function(evt) {
+        if (evt.target !== map) {
+          return;
+        }
+        let coord = map.screenToGeo(evt.viewportX, evt.viewportY);
+        let lat = Math.abs(coord.lat.toFixed(3));
+        let lng = Math.abs(coord.lng.toFixed(3));
+        if (lat >= 49.109 && lat <= 49.119 && lng >= 8.502 && lng <= 8.514) {
+          evt.items.push(
+            new window.H.util.ContextItem({
+              label: "Boldy go where no man has gone before?",
+              callback: function() {
+                dispatch({
+                  type: "LANGUAGE",
+                  payload: { name: "Klingon", code: "kl" }
+                });
+              }
+            })
+          );
+        }
+      });
     }
   }, [props, state.language.code, dispatch]);
 

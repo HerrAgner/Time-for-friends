@@ -154,10 +154,18 @@ const PersonItem = ({ person, deleteItem, transitionTiming }) => {
             // alignItems="center"
           >
             <Card>
-              <CardContent>{T.personForm.formCountry}: {person.location.country}</CardContent>
-              <CardContent>{T.personForm.formCity}: {person.location.city}</CardContent>
-              <CardContent>{T.sort.timeZone}: {person.location.timeZone}</CardContent>
-              <CardContent>{T.personForm.formEmail}: {person.email.join(", ")}</CardContent>
+              <CardContent>
+                {T.personForm.formCountry}: {person.location.country}
+              </CardContent>
+              <CardContent>
+                {T.personForm.formCity}: {person.location.city}
+              </CardContent>
+              <CardContent>
+                {T.sort.timeZone}: {person.location.timeZone}
+              </CardContent>
+              <CardContent>
+                {T.personForm.formEmail}: {person.email.join(", ")}
+              </CardContent>
               <CardContent>
                 {T.personForm.formPhoneNumber}: {person.phoneNumber.join(", ")}
               </CardContent>
@@ -168,30 +176,33 @@ const PersonItem = ({ person, deleteItem, transitionTiming }) => {
             {/*  country={person.location.country}*/}
             {/*  _id={person._id}*/}
             {/*/>*/}
-              <IconButton aria-label="delete" onClick={handleClickOpen}>
-                <DeleteIcon />
-              </IconButton>
-              <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogTitle id="alert-dialog-title">{T.friend.deleteFriend}</DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    {T.friend.areYouSure} {person.name.firstName} {person.name.lastName}?
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose} color="primary">
-                    {T.friend.no}
-                  </Button>
-                  <Button onClick={deleteItem} color="primary" autoFocus>
-                    {T.friend.yes}
-                  </Button>
-                </DialogActions>
-              </Dialog>
+            <IconButton aria-label="delete" onClick={handleClickOpen}>
+              <DeleteIcon />
+            </IconButton>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {T.friend.deleteFriend}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {T.friend.areYouSure} {person.name.firstName}{" "}
+                  {person.name.lastName}?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  {T.friend.no}
+                </Button>
+                <Button onClick={deleteItem} color="primary" autoFocus>
+                  {T.friend.yes}
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Grid>
         </ExpansionPanelDetails>
       </ExpansionPanel>
