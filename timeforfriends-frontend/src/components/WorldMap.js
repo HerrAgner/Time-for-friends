@@ -1,7 +1,9 @@
 import React, { useEffect, useContext } from "react";
 import { Store } from "../Store";
+import "../style/map.css";
 
 const WorldMap = props => {
+
   const { state, dispatch } = useContext(Store);
   useEffect(() => {
     let platform = new window.H.service.Platform({
@@ -59,9 +61,7 @@ const WorldMap = props => {
               position.lat,
               position.lng,
               1,
-              `${p.name.firstName} ${p.name.lastName} in ${p.location.city}, ${
-                p.location.country
-              }`
+              `${p.name.firstName} ${p.name.lastName}`
             )
           );
 
@@ -98,7 +98,7 @@ const WorldMap = props => {
                 cnt.forEachEntry(event => {
                   if (event.a.data) {
                     bubbleText.push({
-                      info: `${event.a.data}`,
+                      info: `${event.a.data}\n`,
                       pos: event.getPosition()
                     });
                   }
@@ -114,7 +114,7 @@ const WorldMap = props => {
                   bubble = new window.H.ui.InfoBubble(
                     evt.target.getGeometry(),
                     {
-                      content: bubbleText.map(content => content.info).join(" ")
+                      content: "Friends living here: " + bubbleText.map(c => c.info).join(",")
                     }
                   );
                 } else {
@@ -188,7 +188,7 @@ const WorldMap = props => {
     container.setAttribute("id", "worldmap");
     container.setAttribute(
       "style",
-      "width: 100vw; height: 95.5vh; background: grey"
+      "width: 100vw; height: 95vh; background: grey"
     );
     parent.append(container);
     return container;

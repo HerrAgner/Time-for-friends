@@ -15,12 +15,17 @@ import {
 import Grid from "@material-ui/core/Grid";
 import { Store } from "../Store";
 import Map from "./Map";
+import Zoom from "@material-ui/core/Zoom";
+import Fade from "@material-ui/core/Fade";
+import Collapse from "@material-ui/core/Collapse";
+import Grow from "@material-ui/core/Grow";
 
 const PersonRender = (filter, timeFilter, timeZoneFilter, sort) => {
   const { state, dispatch } = useContext(Store);
   let max = timeFilter.max % 1 === 0 ? 0 : 30;
   let min = timeFilter.min % 1 === 0 ? 0 : 30;
   let tempArray = sortList(state.people, sort);
+  let startTiming = 50;
   return tempArray
     .filter(p =>
       p.location.timeZone.toUpperCase().includes(timeZoneFilter.toUpperCase())
@@ -50,11 +55,12 @@ const PersonRender = (filter, timeFilter, timeZoneFilter, sort) => {
       }
       return null;
     })
-    .map(p => (
+    .map((p, index) => (
       <PersonItem
         key={p._id}
         person={p}
         deleteItem={() => deleteFromDb(p, state, dispatch)}
+        transitionTiming={(startTiming*index)+"ms"}
       />
     ));
 };
@@ -100,56 +106,59 @@ const sortList = (tempArray, sort) => {
   }
 };
 
-const PersonItem = ({ person, deleteItem }) => {
+const PersonItem = ({ person, deleteItem, transitionTiming }) => {
   return (
-    <ExpansionPanel
-      TransitionProps={{ unmountOnExit: true }}
-      style={{ width: "100%" }}
-    >
-      <ExpansionPanelSummary>
-        <Grid
-          container
-          direction="row"
-          justify="space-around"
-          alignItems="center"
-        >
-          <Grid item xs={3} style={{ padding: 0 }}>
-            {person.name.firstName} {person.name.lastName}
+    <Fade in={true} style={{ transitionDelay: transitionTiming }}>
+      <ExpansionPanel
+        TransitionProps={{ unmountOnExit: true }}
+        style={{ width: "100%" }}
+        TransitionComponent={Grow}
+      >
+        <ExpansionPanelSummary>
+          <Grid
+            container
+            direction="row"
+            justify="space-around"
+            alignItems="center"
+          >
+            <Grid item xs={3} style={{ padding: 0 }}>
+              {person.name.firstName} {person.name.lastName}
+            </Grid>
+            <Grid item xs={3} style={{ padding: 0 }}>
+              <Clock timeZone={person.location.timeZone} />
+            </Grid>
           </Grid>
-          <Grid item xs={3} style={{ padding: 0 }}>
-            <Clock timeZone={person.location.timeZone} />
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <Grid
+            container
+            item
+            direction="column"
+            // justify="center"
+            // alignItems="center"
+          >
+            <Card>
+              <CardContent>Country: {person.location.country}</CardContent>
+              <CardContent>City: {person.location.city}</CardContent>
+              <CardContent>Timezone: {person.location.timeZone}</CardContent>
+              <CardContent>Email: {person.email.join(", ")}</CardContent>
+              <CardContent>
+                Phone number: {person.phoneNumber.join(", ")}
+              </CardContent>
+            </Card>
+            {/*<Map*/}
+            {/*  zoom="12"*/}
+            {/*  city={person.location.city}*/}
+            {/*  country={person.location.country}*/}
+            {/*  _id={person._id}*/}
+            {/*/>*/}
+            <IconButton aria-label="delete" onClick={deleteItem}>
+              <DeleteIcon />
+            </IconButton>
           </Grid>
-        </Grid>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
-        <Grid
-          container
-          item
-          direction="column"
-          // justify="center"
-          // alignItems="center"
-        >
-          <Card>
-            <CardContent>Country: {person.location.country}</CardContent>
-            <CardContent>City: {person.location.city}</CardContent>
-            <CardContent>Timezone: {person.location.timeZone}</CardContent>
-            <CardContent>Email: {person.email.join(", ")}</CardContent>
-            <CardContent>
-              Phone number: {person.phoneNumber.join(", ")}
-            </CardContent>
-          </Card>
-          <Map
-            zoom="12"
-            city={person.location.city}
-            country={person.location.country}
-            _id={person._id}
-          />
-          <IconButton aria-label="delete" onClick={deleteItem}>
-            <DeleteIcon />
-          </IconButton>
-        </Grid>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+    </Fade>
   );
 };
 const deleteFromDb = (p, state, dispatch) => {

@@ -1,0 +1,13 @@
+#infoBubble {
+    border: 2px red solid;
+    background-color: blue;
+}
+
+.H_ib_body{
+    min-width: fit-content;
+    width: 8vw;
+}
+
+.H_ib_content{
+    min-width: fit-content;
+}
