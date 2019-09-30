@@ -1,5 +1,4 @@
 import React, { useState} from "react";
-import "../style/App.css";
 import PersonRender from "../components/Person";
 import FilterAndSort from "./Filters/FilterAndSort";
 import { makeStyles } from "@material-ui/core";

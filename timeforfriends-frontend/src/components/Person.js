@@ -114,17 +114,18 @@ const PersonItem = ({ person, deleteItem }) => {
           direction="row"
           justify="space-around"
           alignItems="center"
-          spacing={10}
         >
           <Grid
             item
             xs={3}
+            style={{padding: 0}}
           >
             {person.name.firstName} {person.name.lastName}
           </Grid>
           <Grid
             item
             xs={3}
+            style={{padding: 0}}
           >
             <Clock timeZone={person.location.timeZone} />
           </Grid>
