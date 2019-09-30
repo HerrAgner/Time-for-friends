@@ -40,6 +40,7 @@ const Navigation = () => {
       });
     });
   }, [dispatch]);
+
   useEffect(() => {
     switch (history.location.pathname) {
       case "/":
