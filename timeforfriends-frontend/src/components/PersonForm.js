@@ -57,9 +57,8 @@ const PersonForm = () => {
         })
         .then(() => {
           setNotification({
-            message: `${newItem.firstName} ${newItem.lastName} ${
-              T.personForm.notificationAdded
-            }`,
+            message: `${newItem.firstName} ${newItem.lastName} 
+            ${T.personForm.notificationAdded}`,
             type: "notification"
           });
         });
