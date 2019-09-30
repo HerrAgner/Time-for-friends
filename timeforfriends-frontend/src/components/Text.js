@@ -63,6 +63,36 @@ const Text = () => {
         name: "Namn",
         timeZone: "Tidszon"
       }
+    },
+    kl: {
+      navigation: {
+        home: "juH",
+        friends: "jup",
+        addFriend: "jup chel",
+        toggle: "Hol choH"
+      },
+      personForm: {
+        notificationAdded: "chel jup tetlh",
+        errorEmpty: "ghob'e' wej chIm",
+        errorPhoneInvalid: "ngebmo' yIper",
+        errorEmailInvalid: "QumpIn rar ngeb",
+        formFirstName: "wa'DIch pong",
+        formLastName: "wa'Hu' pong",
+        formPhoneNumber: "ghogh HablI' mI'",
+        formEmail: "rar QumpIn",
+        formCountry: "Hatlh",
+        formCity: "veng",
+        button: "Qochbe'"
+      },
+      filter: {
+        name: "Pong vItu'",
+        timeZone: "poH mIch vItu'"
+      },
+      sort: {
+        sortBy: "Segh:",
+        name: "pong",
+        timeZone: "poH mIch"
+      }
     }
   };
   return strings[state.language.code];

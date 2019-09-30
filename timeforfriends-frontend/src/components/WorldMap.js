@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { Store } from "../Store";
 
 const WorldMap = props => {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   useEffect(() => {
     let platform = new window.H.service.Platform({
       apikey: process.env.REACT_APP_API_KEY
@@ -18,7 +18,7 @@ const WorldMap = props => {
       });
 
       let tiles = platform.getMapTileService({ type: "base" });
-      let layer = tiles.createTileLayer("maptile", "reduced.day", 256, "png", {
+      let layer = tiles.createTileLayer("maptile", "normal.night", 256, "png", {
         style: "wings"
       });
       map.setBaseLayer(layer);
@@ -161,8 +161,23 @@ const WorldMap = props => {
       window.addEventListener("resize", function() {
         map.getViewPort().resize();
       });
+
+        // Lurig grej
+        map.addEventListener('tap', function (evt) {
+          let coord = map.screenToGeo(evt.currentPointer.viewportX,
+            evt.currentPointer.viewportY);
+          let lat = Math.abs(coord.lat.toFixed(3))
+          let lng = Math.abs(coord.lng.toFixed(3))
+          if (lat >= 49.109 && lat <= 49.119 && lng >= 8.502 && lng <= 8.514) {
+            dispatch({
+              type: "LANGUAGE",
+              payload: { name: "Klingon", code: "kl" }
+            });
+          }
+        });
+
     }
-  }, [props, state.language.code]);
+  }, [props, state.language.code, dispatch]);
 
   const reRenderMap = () => {
     let parent = document.getElementById("parent");
