@@ -32,6 +32,12 @@ const Text = () => {
         sortBy: "Sort by:",
         name: "Name",
         timeZone: "Time zone"
+      },
+      friend: {
+        yes: "yes",
+        no: "no",
+        deleteFriend: "Delete friend",
+        areYouSure: "Are you sure you want to delete friend "
       }
     },
     sv: {
@@ -62,6 +68,12 @@ const Text = () => {
         sortBy: "Sortera efter:",
         name: "Namn",
         timeZone: "Tidszon"
+      },
+      friend: {
+        yes: "ja",
+        no: "nej",
+        deleteFriend: "Ta bort vän",
+        areYouSure: "Är du säkert på att du vill ta bort "
       }
     },
     kl: {
@@ -92,6 +104,12 @@ const Text = () => {
         sortBy: "Segh:",
         name: "pong",
         timeZone: "poH mIch"
+      },
+      friend: {
+        yes: "HIja'",
+        no: "Qo'",
+        deleteFriend: "jup teq",
+        areYouSure: "be jup teq DaneH'a' "
       }
     }
   };

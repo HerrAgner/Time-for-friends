@@ -14,14 +14,19 @@ import {
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { Store } from "../Store";
-import Map from "./Map";
-import Zoom from "@material-ui/core/Zoom";
 import Fade from "@material-ui/core/Fade";
-import Collapse from "@material-ui/core/Collapse";
 import Grow from "@material-ui/core/Grow";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Text from "./Text";
 
 const PersonRender = (filter, timeFilter, timeZoneFilter, sort) => {
   const { state, dispatch } = useContext(Store);
+
   let max = timeFilter.max % 1 === 0 ? 0 : 30;
   let min = timeFilter.min % 1 === 0 ? 0 : 30;
   let tempArray = sortList(state.people, sort);
@@ -60,7 +65,7 @@ const PersonRender = (filter, timeFilter, timeZoneFilter, sort) => {
         key={p._id}
         person={p}
         deleteItem={() => deleteFromDb(p, state, dispatch)}
-        transitionTiming={(startTiming*index)+"ms"}
+        transitionTiming={startTiming * index + "ms"}
       />
     ));
 };
@@ -107,6 +112,17 @@ const sortList = (tempArray, sort) => {
 };
 
 const PersonItem = ({ person, deleteItem, transitionTiming }) => {
+  const T = Text();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Fade in={true} style={{ transitionDelay: transitionTiming }}>
       <ExpansionPanel
@@ -138,12 +154,12 @@ const PersonItem = ({ person, deleteItem, transitionTiming }) => {
             // alignItems="center"
           >
             <Card>
-              <CardContent>Country: {person.location.country}</CardContent>
-              <CardContent>City: {person.location.city}</CardContent>
-              <CardContent>Timezone: {person.location.timeZone}</CardContent>
-              <CardContent>Email: {person.email.join(", ")}</CardContent>
+              <CardContent>{T.personForm.formCountry}: {person.location.country}</CardContent>
+              <CardContent>{T.personForm.formCity}: {person.location.city}</CardContent>
+              <CardContent>{T.sort.timeZone}: {person.location.timeZone}</CardContent>
+              <CardContent>{T.personForm.formEmail}: {person.email.join(", ")}</CardContent>
               <CardContent>
-                Phone number: {person.phoneNumber.join(", ")}
+                {T.personForm.formPhoneNumber}: {person.phoneNumber.join(", ")}
               </CardContent>
             </Card>
             {/*<Map*/}
@@ -152,15 +168,37 @@ const PersonItem = ({ person, deleteItem, transitionTiming }) => {
             {/*  country={person.location.country}*/}
             {/*  _id={person._id}*/}
             {/*/>*/}
-            <IconButton aria-label="delete" onClick={deleteItem}>
-              <DeleteIcon />
-            </IconButton>
+              <IconButton aria-label="delete" onClick={handleClickOpen}>
+                <DeleteIcon />
+              </IconButton>
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">{T.friend.deleteFriend}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    {T.friend.areYouSure} {person.name.firstName} {person.name.lastName}?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    {T.friend.no}
+                  </Button>
+                  <Button onClick={deleteItem} color="primary" autoFocus>
+                    {T.friend.yes}
+                  </Button>
+                </DialogActions>
+              </Dialog>
           </Grid>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </Fade>
   );
 };
+
 const deleteFromDb = (p, state, dispatch) => {
   mongoAPI.deleteObject(p._id, "person").then(() => {
     return dispatch({
