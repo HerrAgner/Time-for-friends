@@ -4,7 +4,7 @@ import { Store } from "../Store";
 
 const Clock = timeZone => {
   const { state } = useContext(Store);
-  const timeFormat = state.language.code === "en" ? "hh:mm:ss a" : "HH:mm:ss"
+  const timeFormat = state.language.code === "en" ? "hh:mm:ss a" : "HH:mm:ss";
   const [time, setTime] = useState(
     moment()
       .tz(timeZone.timeZone)
@@ -12,12 +12,12 @@ const Clock = timeZone => {
   );
 
   useEffect(() => {
-      setTime(
-          moment()
-              .tz(timeZone.timeZone)
-              .format(timeFormat)
-      );
-  },[timeFormat, timeZone.timeZone])
+    setTime(
+      moment()
+        .tz(timeZone.timeZone)
+        .format(timeFormat)
+    );
+  }, [timeFormat, timeZone.timeZone]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {

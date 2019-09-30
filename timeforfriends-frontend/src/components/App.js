@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import PersonRender from "../components/Person";
 import FilterAndSort from "./Filters/FilterAndSort";
 import { makeStyles } from "@material-ui/core";
@@ -8,12 +8,12 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   personContainer: {
     minWidth: "80%",
     padding: 0
-}
+  }
 }));
 
 const App = props => {
@@ -37,12 +37,7 @@ const App = props => {
         />
         <ul className={classes.personContainer}>
           <div>
-            {PersonRender(
-              nameFilter,
-              timeFilter,
-              timeZoneFilter,
-              sort
-            )}
+            {PersonRender(nameFilter, timeFilter, timeZoneFilter, sort)}
           </div>
         </ul>
       </div>

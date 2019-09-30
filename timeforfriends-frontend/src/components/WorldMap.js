@@ -149,7 +149,9 @@ const WorldMap = props => {
       const behavior = new window.H.mapevents.Behavior(
         new window.H.mapevents.MapEvents(map)
       );
-      state.language.code === "en" ? ui.setUnitSystem(window.H.ui.UnitSystem.IMPERIAL) : ui.setUnitSystem(window.H.ui.UnitSystem.METRIC)
+      state.language.code === "en"
+        ? ui.setUnitSystem(window.H.ui.UnitSystem.IMPERIAL)
+        : ui.setUnitSystem(window.H.ui.UnitSystem.METRIC);
 
       // let addMarkerToGroup = (group, position, html) => {
       //   let marker = new window.H.map.Marker(position);

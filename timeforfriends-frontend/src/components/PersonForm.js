@@ -30,7 +30,6 @@ const PersonForm = () => {
     type: null
   });
 
-
   useEffect(() => {
     if (Object.keys(newItem).includes("timeZone")) {
       let sendItem = {

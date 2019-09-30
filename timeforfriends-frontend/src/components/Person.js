@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import mongoAPI from "../api/mongoAPI";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
@@ -8,29 +8,27 @@ import moment from "moment-timezone";
 import {
   ExpansionPanelDetails,
   ExpansionPanelSummary,
-  ExpansionPanel, Card, CardContent
+  ExpansionPanel,
+  Card,
+  CardContent
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import {Store} from "../Store";
+import { Store } from "../Store";
 import Map from "./Map";
 
-
-const PersonRender = (
-  filter,
-  timeFilter,
-  timeZoneFilter,
-  sort
-) => {
+const PersonRender = (filter, timeFilter, timeZoneFilter, sort) => {
   const { state, dispatch } = useContext(Store);
   let max = timeFilter.max % 1 === 0 ? 0 : 30;
   let min = timeFilter.min % 1 === 0 ? 0 : 30;
-  let tempArray = sortList(state.people, sort)
+  let tempArray = sortList(state.people, sort);
   return tempArray
     .filter(p =>
       p.location.timeZone.toUpperCase().includes(timeZoneFilter.toUpperCase())
     )
-    .filter(p =>
-        p.name.firstName.toUpperCase().includes(filter.name.toUpperCase()) || p.name.lastName.toUpperCase().includes(filter.name.toUpperCase())
+    .filter(
+      p =>
+        p.name.firstName.toUpperCase().includes(filter.name.toUpperCase()) ||
+        p.name.lastName.toUpperCase().includes(filter.name.toUpperCase())
     )
     .filter(p => {
       if (
@@ -86,7 +84,7 @@ const sortList = (tempArray, sort) => {
       }
       return 0;
     });
-    return tempArray
+    return tempArray;
   }
   if (sort === "TIMEZONE") {
     tempArray.sort((a, b) => {
@@ -98,9 +96,9 @@ const sortList = (tempArray, sort) => {
       }
       return 0;
     });
-    return tempArray
+    return tempArray;
   }
-}
+};
 
 const PersonItem = ({ person, deleteItem }) => {
   return (
@@ -115,18 +113,10 @@ const PersonItem = ({ person, deleteItem }) => {
           justify="space-around"
           alignItems="center"
         >
-          <Grid
-            item
-            xs={3}
-            style={{padding: 0}}
-          >
+          <Grid item xs={3} style={{ padding: 0 }}>
             {person.name.firstName} {person.name.lastName}
           </Grid>
-          <Grid
-            item
-            xs={3}
-            style={{padding: 0}}
-          >
+          <Grid item xs={3} style={{ padding: 0 }}>
             <Clock timeZone={person.location.timeZone} />
           </Grid>
         </Grid>
@@ -163,16 +153,13 @@ const PersonItem = ({ person, deleteItem }) => {
   );
 };
 const deleteFromDb = (p, state, dispatch) => {
-  mongoAPI
-    .deleteObject(p._id, "person")
-    .then(() => {
-      return dispatch({
-        type: 'PEOPLE',
-        payload: state.people.filter(item => item._id !== p._id)
-
-      });
-      // setItems(items.filter(item => item._id !== p._id))
+  mongoAPI.deleteObject(p._id, "person").then(() => {
+    return dispatch({
+      type: "PEOPLE",
+      payload: state.people.filter(item => item._id !== p._id)
     });
+    // setItems(items.filter(item => item._id !== p._id))
+  });
 };
 
 export default PersonRender;

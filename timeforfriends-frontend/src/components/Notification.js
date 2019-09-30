@@ -1,5 +1,5 @@
 import React from "react";
-import {green, red} from "@material-ui/core/colors";
+import { green, red } from "@material-ui/core/colors";
 import Paper from "@material-ui/core/Paper";
 
 const Notification = ({ message, type }) => {
@@ -17,7 +17,11 @@ const Notification = ({ message, type }) => {
     return null;
   }
 
-  return <Paper className="notification" style={message && notificationStyle}>{message}</Paper>;
+  return (
+    <Paper className="notification" style={message && notificationStyle}>
+      {message}
+    </Paper>
+  );
 };
 
 export default Notification;

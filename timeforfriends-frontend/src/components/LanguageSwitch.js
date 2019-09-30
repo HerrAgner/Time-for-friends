@@ -28,10 +28,12 @@ const LanguageSwitch = () => {
 
   const handleChange = name => event => {
     setChecked({ ...checked, [name]: event.target.checked });
-      dispatch({
-          type: "LANGUAGE",
-          payload: event.target.checked ? {name: "English", code: "en"} : {name: "Swedish", code: "sv"}
-      });
+    dispatch({
+      type: "LANGUAGE",
+      payload: event.target.checked
+        ? { name: "English", code: "en" }
+        : { name: "Swedish", code: "sv" }
+    });
   };
 
   return (
@@ -45,9 +47,9 @@ const LanguageSwitch = () => {
             value="checked"
           />
         </Grid>
-          {/*<Grid item>{T.navigation.toggle}</Grid>*/}
+        {/*<Grid item>{T.navigation.toggle}</Grid>*/}
       </Grid>
     </FormGroup>
   );
-}
-export default LanguageSwitch
+};
+export default LanguageSwitch;

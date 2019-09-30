@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import NameFilter from "./NameFilter";
 import SliderFilter from "./SliderFilter";
 import TimeZoneFilter from "./SelectFilter";
@@ -6,8 +6,8 @@ import SortButtons from "./SortButtons";
 import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {Store} from "../../Store";
-import Text from "../Text"
+import { Store } from "../../Store";
+import Text from "../Text";
 
 const FilterAndSort = ({
   setNameFilter,
@@ -22,9 +22,16 @@ const FilterAndSort = ({
   const classes = useStyles();
   const T = Text();
   return (
-    <Container maxWidth="md" className={classes.root} style={{padding: 0}}>
-      <Card className={classes.card} style={{margin:"10px", padding:"10px"}}>
-        <NameFilter text={T.filter.name} setNameFilter={setNameFilter} className={classes.textField} />
+    <Container maxWidth="md" className={classes.root} style={{ padding: 0 }}>
+      <Card
+        className={classes.card}
+        style={{ margin: "10px", padding: "10px" }}
+      >
+        <NameFilter
+          text={T.filter.name}
+          setNameFilter={setNameFilter}
+          className={classes.textField}
+        />
         <TimeZoneFilter
           text={T.filter.timeZone}
           setTimeZoneFilter={setTimeZoneFilter}
