@@ -12,7 +12,7 @@ import mongoService from "../api/mongoAPI";
 import { createBrowserHistory } from "history";
 import LanguageSwitch from "./LanguageSwitch";
 import Grid from "@material-ui/core/Grid";
-import T from "./Text";
+import Text from "./Text";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,6 +26,7 @@ const Navigation = () => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const { dispatch } = useContext(Store);
+  const T = Text();
 
   useEffect(() => {
     mongoService.getAll("person").then(res => {
@@ -74,19 +75,19 @@ const Navigation = () => {
             >
               <Tab
                 value={0}
-                label={T().navigation.home}
+                label={T.navigation.home}
                 component={Link}
                 to="/"
               />
               <Tab
                 value={1}
-                label={T().navigation.friends}
+                label={T.navigation.friends}
                 component={Link}
                 to="/friends"
               />
               <Tab
                 value={2}
-                label={T().navigation.addFriend}
+                label={T.navigation.addFriend}
                 component={Link}
                 to="/post"
               />
