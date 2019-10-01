@@ -3,11 +3,12 @@ import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 // import Map from "../Map";
 import Button from "@material-ui/core/Button";
+import Text from "../Text"
 
 const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
-  const address = { city: "", country: "" };
+  const T = Text();
   const [state, setState] = useState({
-    address: address,
+    address: { city: "", country: "" },
     query: "",
     locationId: ""
   });
@@ -17,7 +18,7 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
     const query = queryValue;
     if (!query.length > 0) {
       return setState({
-        address: address,
+        address: { city: "", country: "" },
         query: "",
         locationId: ""
       });
@@ -111,7 +112,7 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
           }
         });
     } else {
-      setResult("Invalid. The address is not recognized.");
+      setResult(T.suggest.invalid);
     }
   };
 
@@ -122,16 +123,16 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
     // console.log(state);
 
     if (state.coords === null) {
-      setResult("Invalid. The address is not recognized.");
+      setResult(T.suggest.invalid);
     } else {
       setResult(
-        "Valid Address. Location is " +
+        T.suggest.valid +
           state.coords.lat +
           " " +
           state.coords.lon
       );
     }
-  }, [state]);
+  }, [state, T.suggest.valid, T.suggest.invalid]);
 
   return (
     <Grid container>
@@ -149,7 +150,7 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
         type="submit"
         onClick={onCheck}
       >
-        Get location
+        {T.personForm.formGetLocationButton}
       </Button>
     </Grid>
   );

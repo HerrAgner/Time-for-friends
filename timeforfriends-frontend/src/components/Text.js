@@ -20,9 +20,16 @@ const Text = () => {
         formLastName: "Last name",
         formPhoneNumber: "Phone number",
         formEmail: "Email",
-        formCountry: "Enter city or country",
+        formCountry: "Country",
         formCity: "City",
+        formEnterLocation: "Enter city or country",
+        formGetLocationButton: "Get location",
+        formSuggestedLocation: "Suggested location:",
         button: "Submit"
+      },
+      suggest: {
+        valid: "Valid Address. Location is ",
+        invalid: "Invalid. The address is not recognized."
       },
       filter: {
         name: "Name filter",
@@ -58,7 +65,14 @@ const Text = () => {
         formEmail: "Email",
         formCountry: "Land",
         formCity: "Stad",
+        formEnterLocation: "Skriv stad eller land",
+        formGetLocationButton: "Hämta plats",
+        formSuggestedLocation: "Förslagen adress:",
         button: "Skicka"
+      },
+      suggest: {
+        valid: "Giltig adress. Platsen är ",
+        invalid: "Ogiltig. Adressen kan inte hittas."
       },
       filter: {
         name: "Filtrera på namn",
@@ -94,7 +108,14 @@ const Text = () => {
         formEmail: "rar QumpIn",
         formCountry: "Hatlh",
         formCity: "veng",
+        formEnterLocation: "veng Sep pagh 'el",
+        formGetLocationButton: "Daq Suq",
+        formSuggestedLocation: "chup Daq:",
         button: "Qochbe'"
+      },
+      suggest: {
+        valid: "lu' SoQ. Daq ",
+        invalid: "ngeb. wej ghov SoQ."
       },
       filter: {
         name: "Pong vItu'",

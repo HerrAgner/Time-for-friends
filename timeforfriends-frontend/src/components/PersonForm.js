@@ -304,7 +304,7 @@ const PersonForm = () => {
           </FormControl>
           <FormControl>
             <InputLabel htmlFor="country-input">
-              {T.personForm.formCountry}
+              {T.personForm.formEnterLocation}
             </InputLabel>
             <Input
               id="country-input"
@@ -339,7 +339,7 @@ const PersonForm = () => {
           {/*  )}*/}
           {/*</FormControl>*/}
           <div>
-            <p>Suggested location:</p>
+            <p>{T.personForm.formSuggestedLocation}</p>
             {suggestion.label}
           </div>
           <AddressForm queryValue={newItem.country} setSuggestion={setSuggestion} suggestion={suggestion}/>
