@@ -152,11 +152,6 @@ const WorldMap = props => {
         ? ui.setUnitSystem(window.H.ui.UnitSystem.IMPERIAL)
         : ui.setUnitSystem(window.H.ui.UnitSystem.METRIC);
 
-      // let addMarkerToGroup = (group, position, html) => {
-      //   let marker = new window.H.map.Marker(position);
-      //   marker.setData(html);
-      //   group.addObject(marker);
-      // };
       window.addEventListener("resize", function() {
         map.getViewPort().resize();
       });

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import mongoAPI from "../api/mongoAPI";
-import axios from "axios";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
@@ -10,6 +9,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Notification from "./Notification";
 import { Store } from "../Store";
 import Text from "./Text";
+import AddressForm from "./autocomplete/AddressForm";
 
 const PersonForm = () => {
   const T = Text();
@@ -18,12 +18,19 @@ const PersonForm = () => {
     lastName: "",
     phoneNumber: "",
     email: "",
-    country: "",
-    city: ""
+    country: ""
   };
   const { dispatch } = useContext(Store);
   const [errors, setErrors] = useState([]);
   const [newItem, setNewItem] = useState(initialItem);
+  const [suggestion, setSuggestion] = useState({
+    country: "",
+    city: "",
+    long: "",
+    lat: "",
+    label: "",
+    timeZone: ""
+  });
   const [submitCheck, setSubmitCheck] = useState(false);
   const [notification, setNotification] = useState({
     message: null,
@@ -185,20 +192,26 @@ const PersonForm = () => {
   const postToDb = () => {
     validateFields();
     if (submitCheck) {
-      let url = `https://geocoder.api.here.com/6.2/geocode.json?app_id=${
-        process.env.REACT_APP_API_ID
-      }&app_code=${process.env.REACT_APP_API_CODE}&searchtext=${
-        newItem.country
-      }+${newItem.city}&gen=9&locationattributes=tz`;
-      axios.get(url).then(response => {
-        let tz =
-          response.data.Response.View[0].Result[0].Location.AdminInfo.TimeZone
-            .id;
-        setNewItem({
-          ...newItem,
-          timeZone: tz
-        });
+      setNewItem({
+        ...newItem,
+        city: suggestion.city,
+        country: suggestion.country,
+        timeZone: suggestion.timeZone
       });
+      // let url = `https://geocoder.api.here.com/6.2/geocode.json?app_id=${
+      //   process.env.REACT_APP_API_ID
+      // }&app_code=${process.env.REACT_APP_API_CODE}&searchtext=${
+      //   newItem.country
+      // }+${newItem.city}&gen=9&locationattributes=tz`;
+      // axios.get(url).then(response => {
+      //   let tz =
+      //     response.data.Response.View[0].Result[0].Location.AdminInfo.TimeZone
+      //       .id;
+      //   setNewItem({
+      //     ...newItem,
+      //     timeZone: tz
+      //   });
+      // });
     }
   };
 
@@ -307,24 +320,29 @@ const PersonForm = () => {
               </FormHelperText>
             )}
           </FormControl>
-          <FormControl>
-            <InputLabel htmlFor="city-input">
-              {T.personForm.formCity}
-            </InputLabel>
-            <Input
-              id="city-input"
-              name="city"
-              value={newItem.city}
-              onChange={handleNewItemChange}
-              onBlur={blurValidation}
-              error={errors.some(e => e.name === "city")}
-            />
-            {errors.some(e => e.name === "city") && (
-              <FormHelperText id="city-error" error={true}>
-                {T.personForm.formCity} {T.personForm.errorEmpty}
-              </FormHelperText>
-            )}
-          </FormControl>
+          {/*<FormControl>*/}
+          {/*  <InputLabel htmlFor="city-input">*/}
+          {/*    {T.personForm.formCity}*/}
+          {/*  </InputLabel>*/}
+          {/*  <Input*/}
+          {/*    id="city-input"*/}
+          {/*    name="city"*/}
+          {/*    value={suggestion.city}*/}
+          {/*    onChange={handleNewItemChange}*/}
+          {/*    onBlur={blurValidation}*/}
+          {/*    error={errors.some(e => e.name === "city")}*/}
+          {/*  />*/}
+          {/*  {errors.some(e => e.name === "city") && (*/}
+          {/*    <FormHelperText id="city-error" error={true}>*/}
+          {/*      {T.personForm.formCity} {T.personForm.errorEmpty}*/}
+          {/*    </FormHelperText>*/}
+          {/*  )}*/}
+          {/*</FormControl>*/}
+          <div>
+            <p>Suggested location:</p>
+            {suggestion.label}
+          </div>
+          <AddressForm queryValue={newItem.country} setSuggestion={setSuggestion} suggestion={suggestion}/>
         </Grid>
         <Grid
           container

@@ -20,7 +20,7 @@ const Text = () => {
         formLastName: "Last name",
         formPhoneNumber: "Phone number",
         formEmail: "Email",
-        formCountry: "Country",
+        formCountry: "Enter city or country",
         formCity: "City",
         button: "Submit"
       },
