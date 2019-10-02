@@ -37,7 +37,10 @@ const PersonForm = () => {
     type: null
   });
   useEffect(() => {
-    if (Object.keys(newItem).includes("timeZone") && Object.keys(newItem).includes("city")) {
+    if (
+      Object.keys(newItem).includes("timeZone") &&
+      Object.keys(newItem).includes("city")
+    ) {
       let sendItem = {
         name: {
           firstName: newItem.firstName,
@@ -69,6 +72,14 @@ const PersonForm = () => {
           });
         });
       setNewItem(initialItem);
+      setSuggestion({
+        country: "",
+        city: "",
+        long: "",
+        lat: "",
+        label: "",
+        timeZone: ""
+      });
     }
     const timeout = setTimeout(() => {
       setNotification({ name: null, type: null });
@@ -79,9 +90,7 @@ const PersonForm = () => {
   useEffect(() => {
     if (errors.length === 0 && Object.values(newItem).every(v => v !== "")) {
       setSubmitCheck(true);
-      console.log("true");
     } else {
-      console.log("false");
       setSubmitCheck(false);
     }
   }, [errors, newItem]);
@@ -118,7 +127,7 @@ const PersonForm = () => {
         }
       }
     });
-    if (suggestion.city === "") {
+    if (suggestion.label === "") {
       setErrors(oldArray => [
         ...oldArray,
         {
@@ -156,7 +165,6 @@ const PersonForm = () => {
       const re = /[(]?[+]?(\d{2}|\d{3})[)]?[\s]?((\d{6}|\d{8})|(\d{3}[*.\-\s]){3}|(\d{2}[*.\-\s]){4}|(\d{4}[*.\-\s]){2})|\d{8}|\d{10}|\d{12}/;
       const phoneArray = event.target.value.split(/\n/);
       phoneArray.forEach(nr => {
-        console.log();
         if (!re.test(nr) || nr.length > 16) {
           setErrors([
             ...errors,
@@ -202,7 +210,7 @@ const PersonForm = () => {
 
   const postToDb = () => {
     validateFields();
-    if (submitCheck && suggestion.city !== "") {
+    if (submitCheck && suggestion.label !== "") {
       setNewItem({
         ...newItem,
         city: suggestion.city,
@@ -349,11 +357,11 @@ const PersonForm = () => {
           {/*    </FormHelperText>*/}
           {/*  )}*/}
           {/*</FormControl>*/}
-          <div>
-            <p>{T.personForm.formSuggestedLocation}</p>
-            {suggestion.label}
-          </div>
-          <AddressForm queryValue={newItem.country} setSuggestion={setSuggestion} suggestion={suggestion}/>
+          <AddressForm
+            queryValue={newItem.country}
+            setSuggestion={setSuggestion}
+            suggestion={suggestion}
+          />
         </Grid>
         <Grid
           container
@@ -362,6 +370,8 @@ const PersonForm = () => {
           alignItems="center"
         >
           <Button
+            color="primary"
+            disabled={!suggestion.label}
             variant="contained"
             style={{ margin: "1vh" }}
             onClick={() => postToDb()}

@@ -3,7 +3,7 @@ import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 // import Map from "../Map";
 import Button from "@material-ui/core/Button";
-import Text from "../Text"
+import Text from "../Text";
 
 const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
   const T = Text();
@@ -14,14 +14,10 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
   });
   const [result, setResult] = useState("");
 
-  useEffect(() => {
+  const onCheck = () => {
     const query = queryValue;
     if (!query.length > 0) {
-      return setState({
-        address: { city: "", country: "" },
-        query: "",
-        locationId: ""
-      });
+      return;
     }
 
     axios
@@ -34,30 +30,41 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
         }
       })
       .then(function(response) {
-        if (response.data.suggestions.length > 0) {
-          const address = response.data.suggestions
-            .filter(s => s.matchLevel === "city")
-            .map(a => a.address);
-          const id = response.data.suggestions
-            .filter(s => s.matchLevel === "city")
-            .map(a => a.locationId);
-          setState({
-            address: address[0],
-            query: query,
-            locationId: id
-          });
+        const address = response.data.suggestions
+          .filter(s => s.matchLevel === "city")
+          .map(a => a.address);
+        const id = response.data.suggestions
+          .filter(s => s.matchLevel === "city")
+          .map(a => a.locationId);
+          if (address.length > 0 && id.length > 0) {
+            setState({
+              address: address[0],
+              query: query,
+              locationId: id
+            });
         } else {
           setState({
-            address: "",
-            query: query,
-            locationId: ""
+            ...state,
+            address: {
+              city: "",
+              country: ""
+            },
+            isChecked: true,
+            coords: null,
+            locationId: undefined
+          });
+          setSuggestion({
+            city: "",
+            country: "",
+            label: null,
+            timeZone: ""
           });
         }
       });
-  }, [queryValue]);
+  };
 
-  const onCheck = evt => {
-    if (state.address !== undefined) {
+  useEffect(() => {
+    if (!(state.locationId === undefined || state.locationId === "")) {
       axios
         .get(
           `https://geocoder.api.here.com/6.2/geocode.json?app_id=${
@@ -75,15 +82,13 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
           ) {
             const location = view[0].Result[0].Location;
             setState({
+              ...state,
               isChecked: true,
               coords: {
                 lat: location.DisplayPosition.Latitude,
                 lon: location.DisplayPosition.Longitude
               },
-              address: {
-                city: location.Address.City,
-                country: location.Address.Country
-              }
+              address: location.Address
             });
             if (location.Address.City) {
               setSuggestion({
@@ -96,46 +101,40 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
             }
           } else {
             setState({
+              ...state,
               address: {
                 city: "",
                 country: ""
               },
               isChecked: true,
-              coords: null
+              coords: null,
+              locationId: null
             });
             setSuggestion({
-              ...suggestion,
               city: "",
               country: "",
-              label: ""
+              label: null,
+              timeZone: ""
             });
           }
         });
-    } else {
-      setResult(T.suggest.invalid);
     }
-  };
+  }, [state.locationId]);
 
   useEffect(() => {
     if (!state.isChecked) {
       return;
     }
-    // console.log(state);
 
     if (state.coords === null) {
       setResult(T.suggest.invalid);
     } else {
-      setResult(
-        T.suggest.valid +
-          state.coords.lat +
-          " " +
-          state.coords.lon
-      );
+      setResult(T.suggest.valid + state.coords.lat + " " + state.coords.lon);
     }
   }, [state, T.suggest.valid, T.suggest.invalid]);
 
   return (
-    <Grid container>
+    <Grid container direction="column" justify="center" alignItems="center">
       {/*<AddressSuggest query={state.query} onChange={() => onQuery} />*/}
       {/*<AddressInput*/}
       {/*  city={state.address.city}*/}
@@ -143,6 +142,12 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
       {/*  country={state.address.country}*/}
       {/*/>*/}
       {/*<br />*/}
+      {suggestion.label && (
+        <Grid container direction="column" justify="center" alignItems="center">
+          {T.personForm.formSuggestedLocation}
+          <b>{suggestion.label}</b>
+        </Grid>
+      )}
       {result}
       <Button
         variant="contained"
