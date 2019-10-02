@@ -217,20 +217,6 @@ const PersonForm = () => {
         country: suggestion.country,
         timeZone: suggestion.timeZone
       });
-      // let url = `https://geocoder.api.here.com/6.2/geocode.json?app_id=${
-      //   process.env.REACT_APP_API_ID
-      // }&app_code=${process.env.REACT_APP_API_CODE}&searchtext=${
-      //   newItem.country
-      // }+${newItem.city}&gen=9&locationattributes=tz`;
-      // axios.get(url).then(response => {
-      //   let tz =
-      //     response.data.Response.View[0].Result[0].Location.AdminInfo.TimeZone
-      //       .id;
-      //   setNewItem({
-      //     ...newItem,
-      //     timeZone: tz
-      //   });
-      // });
     }
   };
 
@@ -335,7 +321,7 @@ const PersonForm = () => {
             />
             {errors.some(e => e.name === "country") && (
               <FormHelperText id="country-error" error={true}>
-                {T.personForm.formCountry} {T.personForm.errorEmpty}
+                {T.personForm.formEnterLocation} {T.personForm.errorEmpty}
               </FormHelperText>
             )}
           </FormControl>

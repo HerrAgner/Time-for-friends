@@ -36,18 +36,4 @@ let personSchema = new Schema({
   }
 });
 
-// class personClass {
-//   // getName() {
-//   //   return `My name is ${this.name}. I am ${this.age} years old. I live in ${
-//   //     this.town
-//   //   }`;
-//   // }
-//   //
-//   // sayBye() {
-//   //   return `${this.name} says 'Bye, bye'!`;
-//   // }
-// }
-//
-// personSchema.loadClass(personClass);
-// export the mongoose model as our module
 module.exports = mongoose.model("person", personSchema);

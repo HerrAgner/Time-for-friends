@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
-// import Map from "../Map";
 import Button from "@material-ui/core/Button";
 import Text from "../Text";
 
@@ -26,7 +25,7 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
           app_id: process.env.REACT_APP_API_ID,
           app_code: process.env.REACT_APP_API_CODE,
           query: query,
-          maxresults: 5
+          maxresults: 20
         }
       })
       .then(function(response) {
@@ -64,7 +63,7 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
   };
 
   useEffect(() => {
-    if (!(state.locationId === undefined || state.locationId === "")) {
+    if (!(state.locationId === undefined || state.locationId === "" || suggestion.label !== "")) {
       axios
         .get(
           `https://geocoder.api.here.com/6.2/geocode.json?app_id=${
@@ -90,7 +89,7 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
               },
               address: location.Address
             });
-            if (location.Address.City) {
+            if (location.Address.Label) {
               setSuggestion({
                 ...suggestion,
                 city: location.Address.City,
@@ -119,7 +118,7 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
           }
         });
     }
-  }, [state.locationId]);
+  }, [state.locationId, suggestion, setSuggestion]);
 
   useEffect(() => {
     if (!state.isChecked) {
