@@ -36,9 +36,8 @@ const PersonForm = () => {
     message: null,
     type: null
   });
-
   useEffect(() => {
-    if (Object.keys(newItem).includes("timeZone")) {
+    if (Object.keys(newItem).includes("timeZone") && Object.keys(newItem).includes("city")) {
       let sendItem = {
         name: {
           firstName: newItem.firstName,
@@ -80,7 +79,9 @@ const PersonForm = () => {
   useEffect(() => {
     if (errors.length === 0 && Object.values(newItem).every(v => v !== "")) {
       setSubmitCheck(true);
+      console.log("true");
     } else {
+      console.log("false");
       setSubmitCheck(false);
     }
   }, [errors, newItem]);
@@ -99,7 +100,6 @@ const PersonForm = () => {
       ]);
     }
   };
-
   const validateFields = () => {
     Object.entries(newItem).forEach(([key, val]) => {
       if (val === "" && !errors.some(e => e.name === key)) {
@@ -118,6 +118,17 @@ const PersonForm = () => {
         }
       }
     });
+    if (suggestion.city === "") {
+      setErrors(oldArray => [
+        ...oldArray,
+        {
+          name: "country",
+          type: "empty"
+        }
+      ]);
+    } else {
+      setErrors(errors.filter(error => "country" !== error.name));
+    }
   };
 
   const handleNewItemChange = event => {
@@ -191,7 +202,7 @@ const PersonForm = () => {
 
   const postToDb = () => {
     validateFields();
-    if (submitCheck) {
+    if (submitCheck && suggestion.city !== "") {
       setNewItem({
         ...newItem,
         city: suggestion.city,

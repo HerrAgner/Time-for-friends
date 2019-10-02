@@ -22,7 +22,7 @@ const Text = () => {
         formEmail: "Email",
         formCountry: "Country",
         formCity: "City",
-        formEnterLocation: "Enter city or country",
+        formEnterLocation: "City and country",
         formGetLocationButton: "Get location",
         formSuggestedLocation: "Suggested location:",
         button: "Submit"
@@ -65,7 +65,7 @@ const Text = () => {
         formEmail: "Email",
         formCountry: "Land",
         formCity: "Stad",
-        formEnterLocation: "Skriv stad eller land",
+        formEnterLocation: "Stad och land",
         formGetLocationButton: "Hämta plats",
         formSuggestedLocation: "Förslagen adress:",
         button: "Skicka"
@@ -108,7 +108,7 @@ const Text = () => {
         formEmail: "rar QumpIn",
         formCountry: "Hatlh",
         formCity: "veng",
-        formEnterLocation: "veng Sep pagh 'el",
+        formEnterLocation: "veng Sep je",
         formGetLocationButton: "Daq Suq",
         formSuggestedLocation: "chup Daq:",
         button: "Qochbe'"
