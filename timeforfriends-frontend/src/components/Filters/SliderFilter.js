@@ -101,7 +101,7 @@ const TimeDisplay = ({ timeFilter }) => {
   const lang = state.language.code;
   let hour = /([^.]+)/.exec(timeFilter)[0];
   let ampm;
-  if (timeFilter < 10) {
+  if (timeFilter < 10 && lang !== "en") {
     hour = "0" + hour;
   }
   if (Number(hour) >= 12 && lang === "en") {

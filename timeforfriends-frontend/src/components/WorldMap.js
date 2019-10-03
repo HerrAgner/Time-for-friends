@@ -188,9 +188,12 @@ const WorldMap = props => {
     }
     let container = document.createElement("div");
     container.setAttribute("id", "worldmap");
-    container.setAttribute(
+    window.innerWidth > 600 ? container.setAttribute(
       "style",
-      "width: 100vw; height: 95vh; background: grey"
+      "width: 100vw; height: 95.5vh; background: grey"
+    ) : container.setAttribute(
+      "style",
+      "width: 100vw; height: 90vh; background: grey"
     );
     parent.append(container);
     return container;

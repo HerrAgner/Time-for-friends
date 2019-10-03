@@ -35,12 +35,12 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
         const id = response.data.suggestions
           .filter(s => s.matchLevel === "city")
           .map(a => a.locationId);
-          if (address.length > 0 && id.length > 0) {
-            setState({
-              address: address[0],
-              query: query,
-              locationId: id
-            });
+        if (address.length > 0 && id.length > 0) {
+          setState({
+            address: address[0],
+            query: query,
+            locationId: id
+          });
         } else {
           setState({
             ...state,
@@ -55,7 +55,7 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
           setSuggestion({
             city: "",
             country: "",
-            label: null,
+            label: "",
             timeZone: ""
           });
         }
@@ -63,7 +63,12 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
   };
 
   useEffect(() => {
-    if (!(state.locationId === undefined || state.locationId === "" || suggestion.label !== "")) {
+    if (
+      !(
+        state.locationId === undefined ||
+        state.locationId === ""
+      )
+    ) {
       axios
         .get(
           `https://geocoder.api.here.com/6.2/geocode.json?app_id=${
@@ -118,7 +123,8 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
           }
         });
     }
-  }, [state.locationId, suggestion, setSuggestion]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.locationId]);
 
   useEffect(() => {
     if (!state.isChecked) {
@@ -145,6 +151,8 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
         <Grid container direction="column" justify="center" alignItems="center">
           {T.personForm.formSuggestedLocation}
           <b>{suggestion.label}</b>
+          {T.sort.timeZone}:<b>{suggestion.timeZone}</b>
+          <br />
         </Grid>
       )}
       {result}

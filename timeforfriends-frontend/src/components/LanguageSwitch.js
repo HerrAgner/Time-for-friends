@@ -32,7 +32,7 @@ const LanguageSwitch = () => {
       type: "LANGUAGE",
       payload: event.target.checked
         ? { name: "English", code: "en" }
-        : { name: "Swedish", code: "sv" }
+        : { name: "Svenska", code: "sv" }
     });
   };
 
