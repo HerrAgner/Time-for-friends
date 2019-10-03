@@ -107,6 +107,7 @@ const WorldMap = props => {
                   )
                 );
                 let bubble;
+                console.log(bubbleText.length);
                 if (bubbleText.length > 1) {
                   bubble = new window.H.ui.InfoBubble(
                     evt.target.getGeometry(),
@@ -114,18 +115,6 @@ const WorldMap = props => {
                       content: bubbleText.map(c => c.info).join(",")
                     }
                   );
-                } else {
-                  if (bubbleText[0]) {
-                    bubble = new window.H.ui.InfoBubble(
-                      new window.H.geo.Point(
-                        bubbleText[0].pos.lat,
-                        bubbleText[0].pos.lng
-                      ),
-                      {
-                        content: bubbleText[0].info
-                      }
-                    );
-                  }
                 }
                 if (bubbleText.length > 1) {
                   ui.addBubble(bubble);
