@@ -82,9 +82,7 @@ const WorldMap = props => {
             map.addLayer(layer);
             clusteredDataProvider.addEventListener("tap", function(evt) {
               let cnt = evt.target.getData();
-
               if (typeof cnt.a.data !== "undefined") {
-                console.log(cnt.a.data);
                 let bubble = new window.H.ui.InfoBubble(
                   evt.target.getGeometry(),
                   {
@@ -117,18 +115,21 @@ const WorldMap = props => {
                     }
                   );
                 } else {
-                  bubble = new window.H.ui.InfoBubble(
-                    new window.H.geo.Point(
-                      bubbleText[0].pos.lat,
-                      bubbleText[0].pos.lng
-                    ),
-                    {
-                      content: bubbleText[0].info
-                    }
-                  );
+                  if (bubbleText[0]) {
+                    bubble = new window.H.ui.InfoBubble(
+                      new window.H.geo.Point(
+                        bubbleText[0].pos.lat,
+                        bubbleText[0].pos.lng
+                      ),
+                      {
+                        content: bubbleText[0].info
+                      }
+                    );
+                  }
                 }
-                ui.addBubble(bubble);
-
+                if (bubbleText.length > 1) {
+                  ui.addBubble(bubble);
+                }
                 map.setZoom(map.getZoom() + 2, true);
               }
             });
@@ -188,13 +189,15 @@ const WorldMap = props => {
     }
     let container = document.createElement("div");
     container.setAttribute("id", "worldmap");
-    window.innerWidth > 600 ? container.setAttribute(
-      "style",
-      "width: 100vw; height: 95.5vh; background: grey"
-    ) : container.setAttribute(
-      "style",
-      "width: 100vw; height: 90vh; background: grey"
-    );
+    window.innerWidth > 600
+      ? container.setAttribute(
+          "style",
+          "width: 100vw; height: 95.5vh; background: grey"
+        )
+      : container.setAttribute(
+          "style",
+          "width: 100vw; height: 90vh; background: grey"
+        );
     parent.append(container);
     return container;
   };
