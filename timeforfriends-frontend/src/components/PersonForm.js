@@ -29,7 +29,8 @@ const PersonForm = () => {
     long: "",
     lat: "",
     label: "",
-    timeZone: ""
+    timeZone: "",
+    submitted: false
   });
   const [submitCheck, setSubmitCheck] = useState(false);
   const [notification, setNotification] = useState({
@@ -65,7 +66,7 @@ const PersonForm = () => {
           });
         })
         .then(() => {
-          setNotification({
+            setNotification({
             message: `${newItem.firstName} ${newItem.lastName} 
             ${T.personForm.notificationAdded}`,
             type: "notification"
@@ -78,14 +79,18 @@ const PersonForm = () => {
         long: "",
         lat: "",
         label: "",
-        timeZone: ""
+        timeZone: "",
+        submitted: true
       });
     }
+  }, [newItem, notification, initialItem, dispatch, T]);
+
+  useEffect(() => {
     const timeout = setTimeout(() => {
       setNotification({ name: null, type: null });
     }, 5000);
     return () => clearTimeout(timeout);
-  }, [newItem, notification, initialItem, dispatch, T]);
+  }, [notification, setNotification])
 
   useEffect(() => {
     if (errors.length === 0 && Object.values(newItem).every(v => v !== "")) {

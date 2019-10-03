@@ -77,7 +77,7 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
             state.address.country
           }+${state.address.city}&gen=9&locationattributes=tz`
         )
-        .then(function(response) {
+        .then((response) => {
           const view = response.data.Response.View;
           if (
             view.length > 0 &&
@@ -100,7 +100,8 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
                 city: location.Address.City,
                 country: location.Address.Country,
                 label: location.Address.Label,
-                timeZone: location.AdminInfo.TimeZone.id
+                timeZone: location.AdminInfo.TimeZone.id,
+                submitted: false
               });
             }
           } else {
@@ -118,7 +119,8 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
               city: "",
               country: "",
               label: null,
-              timeZone: ""
+              timeZone: "",
+              submitted: false
             });
           }
         });
@@ -130,7 +132,6 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
     if (!state.isChecked) {
       return;
     }
-
     if (state.coords === null) {
       setResult(T.suggest.invalid);
     } else {
@@ -155,7 +156,8 @@ const AddressForm = ({ queryValue, suggestion, setSuggestion }) => {
           <br />
         </Grid>
       )}
-      {result}
+      {!suggestion.submitted &&
+      <p>{result}</p>}
       <Button
         variant="contained"
         style={{ margin: "1vh" }}

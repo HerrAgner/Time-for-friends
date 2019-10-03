@@ -26,7 +26,7 @@ const Clock = timeZone => {
           .tz(timeZone.timeZone)
           .format(timeFormat)
       );
-    }, 990);
+    }, 1000);
     return () => clearTimeout(timeout);
   });
 
