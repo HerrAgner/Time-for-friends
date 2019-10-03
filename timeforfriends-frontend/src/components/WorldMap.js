@@ -107,7 +107,6 @@ const WorldMap = props => {
                   )
                 );
                 let bubble;
-                console.log(bubbleText.length);
                 if (bubbleText.length > 1) {
                   bubble = new window.H.ui.InfoBubble(
                     evt.target.getGeometry(),
